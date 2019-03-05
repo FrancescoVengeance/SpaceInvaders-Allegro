@@ -23,12 +23,7 @@ public:
 		immagine[1] = al_load_bitmap("Player1.png");
 		immagine[2] = al_load_bitmap("Player2.png");
 	}
-	Player(int _strenght, float _speed) : strenght(_strenght), speed(_speed)
-	{
-		immagine[0] = al_load_bitmap("Player.png");
-		immagine[1] = al_load_bitmap("Player1.png");
-		immagine[2] = al_load_bitmap("Player2.png");
-	}
+
 	~Player()
 	{
 		for (unsigned i = 0; i < 3; i++)
@@ -46,8 +41,8 @@ public:
 
 	ALLEGRO_BITMAP* getPlayerImage(DIRECTION dir)
 	{
-		if (dir == LEFT) return immagine[2]; //if <- is pressed
-		if (dir == RIGHT) return immagine[1]; //if -> is pressed
+		if (dir == LEFT) return immagine[1]; //if <- is pressed
+		if (dir == RIGHT) return immagine[2]; //if -> is pressed
 		return immagine[0]; //if no key is pressed
 	}
 

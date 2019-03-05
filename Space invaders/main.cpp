@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 
 	ALLEGRO_BITMAP* sfondo = al_load_bitmap("sfondo.png"); //background
 
-	Player giocatore(2,5.0); 
+	Player giocatore;
 
 	const unsigned righe = 5; //matrix's lines
 	const unsigned colonne = 9; //matrix's columns
@@ -235,7 +235,18 @@ int main(int argc, char **argv)
 				if (nemico[0][0]->x == 0 && nemico[0][0]->getDraw()) motion = true;
 			}
 
-			al_draw_bitmap(giocatore.getPlayerImage(direction), giocatore.x, giocatore.getY(), 0);
+			if (giocatore.x < 0)
+			{
+				al_draw_bitmap(giocatore.getPlayerImage(OTHER), 0, giocatore.getY(), 1);
+				giocatore.x = 0;
+			}
+			else if (giocatore.x > LARGHEZZA - 150)
+			{
+				al_draw_bitmap(giocatore.getPlayerImage(OTHER), LARGHEZZA - 150, giocatore.getY(), 1);
+				giocatore.x = LARGHEZZA - 150;
+			}
+			else al_draw_bitmap(giocatore.getPlayerImage(direction), giocatore.x, giocatore.getY(), 1);
+			
 			al_flip_display();
 		}
 	}
