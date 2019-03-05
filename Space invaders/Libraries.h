@@ -1,5 +1,4 @@
-//libreria che contiene tutti gli include utilizzati nel gioco
-//per mantenere il codice pulito
+//header file that includes all .h used in the program
 
 #ifndef LIBRARIES_H
 #define LIBRARIES_H

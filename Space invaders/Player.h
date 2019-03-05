@@ -2,9 +2,10 @@
 #define PLAYER_H
 
 #include<iostream>
+#include <allegro5/allegro.h>
 using namespace std;
 
-enum DIRECTION {OTHER, LEFT, RIGHT};
+enum DIRECTION {OTHER, LEFT, RIGHT}; //enum that return the right sprite based on the direction in the main
 
 class Player
 {
@@ -13,7 +14,7 @@ private:
 	float speed = 5.0;
 	float y = 1080-160;
 	int strenght = 5;
-	ALLEGRO_BITMAP* immagine[3] = { nullptr };
+	ALLEGRO_BITMAP* immagine[3] = { nullptr }; //array that contains sprites
 
 public:
 	Player() 
@@ -45,9 +46,9 @@ public:
 
 	ALLEGRO_BITMAP* getPlayerImage(DIRECTION dir)
 	{
-		if (dir == LEFT) return immagine[2];
-		if (dir == RIGHT) return immagine[1];
-		return immagine[0];
+		if (dir == LEFT) return immagine[2]; //if <- is pressed
+		if (dir == RIGHT) return immagine[1]; //if -> is pressed
+		return immagine[0]; //if no key is pressed
 	}
 
 	Player& operator ++() //prefix operator for increment of life

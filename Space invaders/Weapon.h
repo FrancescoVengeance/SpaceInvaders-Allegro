@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_image.h>
 using namespace std;
 
 class Weapon
@@ -14,7 +13,7 @@ protected:
 	ALLEGRO_BITMAP* immagine = nullptr;
 public:
 	Weapon() { immagine = al_load_bitmap("Weapon.png"); cout << "ARMA COSTRUITA" << endl; }
-	Weapon(const Weapon& w)
+	Weapon(const Weapon& w) //copy constructor
 	{
 		speed = w.speed;
 		strenght = w.strenght;

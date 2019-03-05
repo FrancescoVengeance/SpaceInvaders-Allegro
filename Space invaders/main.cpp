@@ -1,10 +1,10 @@
 #include "Libraries.h"
 
-#define FPS 120
-#define ALTEZZA 1080
-#define LARGHEZZA 1920
+#define FPS 120 
+#define ALTEZZA 1080 //height
+#define LARGHEZZA 1920 //width
 
-void easter_egg(ALLEGRO_DISPLAY* display)
+void easter_egg(ALLEGRO_DISPLAY* display) //function for an future easter egg
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_draw_bitmap(al_load_bitmap("easter.png"), (1920/2)-250, (1080/2)-200, 0);
@@ -41,6 +41,8 @@ int main(int argc, char **argv)
 	{
 		al_show_native_message_box(NULL, "ERRORE", "ERRORE", "NON INIZIALIZZATO", "OK", ALLEGRO_MESSAGEBOX_ERROR);
 	}
+
+	//addon's initialization
 	al_init_image_addon();
 	al_install_keyboard();
 	al_install_mouse();
@@ -59,27 +61,26 @@ int main(int argc, char **argv)
 	//al_register_event_source(queue, al_get_display_event_source(display)); //per chiudere la finestra premendo X
 	al_start_timer(timer);
 
-	ALLEGRO_BITMAP* esc = al_load_bitmap("ESC.PNG");
-	ALLEGRO_BITMAP* sfondo = al_load_bitmap("sfondo.png");
+	ALLEGRO_BITMAP* sfondo = al_load_bitmap("sfondo.png"); //background
 
 	Player giocatore(2,5.0); 
 
-	const unsigned righe = 5;
-	const unsigned colonne = 9;
-	Nemico* nemico[righe][colonne];
+	const unsigned righe = 5; //matrix's lines
+	const unsigned colonne = 9; //matrix's columns
+	Nemico* nemico[righe][colonne]; //I've created a pointer to enemy for polimorphism
 
-	//crea i nemici
+	//create enemies
 	for (unsigned i = 0; i < righe; i++)
 	{
 		for (unsigned j = 0; j < colonne; j++)
 		{
-			if (i == 0) nemico[i][j] = new Nemico3;
-			else if(i == 1) nemico[i][j] = new Nemico2;
-			else if (i > 1) nemico[i][j] = new Nemico1;
+			if (i == 0) nemico[i][j] = new Nemico3; //the strongest enemy on the first line
+			else if(i == 1) nemico[i][j] = new Nemico2; //the medium enemy on the second line
+			else if (i > 1) nemico[i][j] = new Nemico1; //the poorest enemy on other lines
 		}
 	}
 
-	for (unsigned i = 0; i < righe; i++)
+	for (unsigned i = 0; i < righe; i++) //check if enemyes are created in the right way
 	{
 		for (unsigned j = 0; j < colonne; j++)
 		{
@@ -88,7 +89,7 @@ int main(int argc, char **argv)
 		cout << endl;
 	}
 
-	//inizializza le coordinate dei nemici
+	//initialize enemies coordinates
 	for (unsigned j = 1; j < colonne; j++)
 	{
 			nemico[0][j]->x = nemico[0][j - 1]->x + al_get_bitmap_width(nemico[0][j]->getEnemyImage()) + 70 ;
@@ -110,20 +111,15 @@ int main(int argc, char **argv)
 		}
 	}
 	cout << endl << endl;
-	
-	//al_hide_mouse_cursor(display); //è tutto una truffa!
-	//ALLEGRO_MIXER* mixer = al_create_mixer()
-	/*ALLEGRO_SAMPLE* song = al_load_sample("11 Exist.ogg");
-	al_reserve_samples(1);
-	ALLEGRO_SAMPLE_INSTANCE* canzone = al_create_sample_instance(song);
-	al_set_sample_instance_playmode(canzone, ALLEGRO_PLAYMODE_LOOP);
-	al_attach_sample_instance_to_mixer(canzone, al_get_default_mixer());
-	al_play_sample_instance(canzone);*/
+	///////////////////
 
-	bool easter[3] = { false };
-	bool close = false;
+
+	//al_hide_mouse_cursor(display); //è tutto una truffa!
+
+	bool easter[3] = { false }; //for the easter egg
+	bool close = false; //to close the game
 	bool motion = true;
-	bool shoot = false;
+	bool shoot = false; //to shooting
 
 	unsigned l = 0; //serve per cambiare riga quando viene distrutto un nemico
 	bool leggi = false;
@@ -131,12 +127,11 @@ int main(int argc, char **argv)
 
 	while (!close) 
 	{
-		DIRECTION direction = OTHER;
+		DIRECTION direction = OTHER; //direction that I pass to the getPlayerImage()
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
-		if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) close = true; //chiude la finestra premendo X
 
-		if (easter[0] && easter[1] && easter[2])
+		if (easter[0] && easter[1] && easter[2]) //trigger the easter egg event
 		{
 			close = true;
 			easter_egg(display);
@@ -147,6 +142,7 @@ int main(int argc, char **argv)
 			cout << "x " << evento.mouse.x;
 			cout << " y " << evento.mouse.y << endl;
 		}
+
 		/*if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
 			if ((evento.mouse.button & 1)) close = true; //1 rappresenta il tasto sinistro del mouse
@@ -158,13 +154,11 @@ int main(int argc, char **argv)
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
 			al_get_keyboard_state(&keyState);
-			if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE)) close = true;
-			//if (al_key_down(&keyState, ALLEGRO_KEY_DOWN)) giocatore.y += giocatore.getPlayerSpeed();
-			//if (al_key_down(&keyState, ALLEGRO_KEY_UP)) giocatore.y -= giocatore.getPlayerSpeed();
+			if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE)) close = true; //when esc is pressed game will end
 			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.x -= giocatore.getPlayerSpeed(); direction = LEFT; }
 			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) { giocatore.x += giocatore.getPlayerSpeed(); direction = RIGHT; }
 			
-			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) 
+			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) //shooting pressinf space key
 			{ 
 				shoot = true;
 				arma = new Weapon;
@@ -176,7 +170,7 @@ int main(int argc, char **argv)
 				arma->y -= arma->getSpeed();
 				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
 				//cout <<"Y "<< arma->y << endl;
-				if (arma->y <= 0  && arma != nullptr)
+				if ((arma->y <= 0) && arma != nullptr) //when the top of the screen is reached delete the weapon
 				{
 					shoot = false;
 					delete arma;
@@ -218,11 +212,12 @@ int main(int argc, char **argv)
 						}*/
 					}
 				}
+				//when the bound is reached enemies change direction
 				if (nemico[l][colonne - 1]->x >= LARGHEZZA-100 && nemico[0][colonne-1]->getDraw()) motion = false;
-				else if(l<righe && !nemico[l][colonne-1]->getDraw())
+				/*else if(l<righe && !nemico[l][colonne-1]->getDraw())
 				{
 					l++;
-				}
+				}*/
 			}
 			else
 			{
@@ -246,7 +241,7 @@ int main(int argc, char **argv)
 	}
 
 	
-	//distrugge i nemici
+	//destroy enemies pointers
 	for (unsigned i = 0; i < righe; i++)
 	{
 		for (unsigned j = 0; j < colonne; j++)
@@ -256,10 +251,7 @@ int main(int argc, char **argv)
 	}
 	//if (arma != nullptr) delete arma;
 
-	//al_destroy_sample(song);
-	//al_destroy_sample_instance(canzone);
 	al_destroy_bitmap(sfondo);
-	al_destroy_bitmap(esc);
 	al_destroy_timer(timer);
 	al_destroy_event_queue(queue);
 	al_destroy_display(display);
