@@ -164,17 +164,14 @@ int main(int argc, char **argv)
 
 				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
 				
-				if (arma->x >= (nemico[4][0]->x) && arma->x <= (nemico[4][0]->x)+100) { //test for first enemy 4th row , zero col 40 
-					al_clear_to_color(al_map_rgb(255, 0, 0)); 
-					al_flip_display();
+				if (arma->x >= (nemico[4][0]->x) && arma->x <= (nemico[4][0]->x)+100)//test for first enemy 4th row , zero col 40 
+				{ 
 					cout << "asd" << endl;
 
 					cout << "asd" << endl;
 					//check other controls on y etc...
 					
 				}
-
-
 				//cout <<"Y "<< arma->y << endl;
 				if ((arma->y <= 0) && arma != nullptr) //when the top of the screen is reached delete the weapon
 				{
