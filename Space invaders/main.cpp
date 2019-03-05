@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 	ALLEGRO_BITMAP* esc = al_load_bitmap("ESC.PNG");
 	ALLEGRO_BITMAP* sfondo = al_load_bitmap("sfondo.png");
 
-	Player giocatore(3,2,5.0); 
+	Player giocatore(2,5.0); 
 
 	const unsigned righe = 5;
 	const unsigned colonne = 9;

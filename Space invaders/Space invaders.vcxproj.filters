@@ -21,9 +21,6 @@
     <ClInclude Include="Libraries.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
@@ -37,6 +34,9 @@
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="Enemy1.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
