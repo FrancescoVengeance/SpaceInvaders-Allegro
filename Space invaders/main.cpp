@@ -181,6 +181,7 @@ int main(int argc, char **argv)
 				if (arma->x >= (nemico[4][0]->x) && arma->x <= (nemico[4][0]->x)+100) { //test for first enemy 4th row , zero col 40 
 					al_clear_to_color(al_map_rgb(255, 0, 0)); 
 					al_flip_display();
+					cout << "asd" << endl;
 					//check other controls on y etc...
 					
 				}
