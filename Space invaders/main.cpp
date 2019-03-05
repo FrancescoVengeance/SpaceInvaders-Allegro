@@ -166,6 +166,7 @@ int main(int argc, char **argv)
 				
 				if (arma->x >= (nemico[4][0]->x) && arma->x <= (nemico[4][0]->x)+100)//test for first enemy 4th row , zero col 40 
 				{ 
+					nemico[4][0]->setDraw(false);
 					cout << "asd" << endl;
 
 					cout << "asd" << endl;
