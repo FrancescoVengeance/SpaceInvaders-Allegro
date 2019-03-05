@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 	}
 
 	cout << "ciao" << endl;
+	//ghfdgd
 	//addon's initialization
 	al_init_image_addon();
 	al_install_keyboard();
