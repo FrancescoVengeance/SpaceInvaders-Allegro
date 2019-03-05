@@ -1,7 +1,9 @@
 # SpaceInvaders-Allegro
 Project for computer science OOP exam
 
-The following program is released "as is" and is shared under the GNU GPL 3.0 license.
+The following software is released "as is" and is shared under the GNU GPL 3.0 license.
+This software is developing on Visual studio community for windows and currently is still under development.
+Changes will be made to this README when it will be completed.
 
 For any questions or suggestions please contact the developer.
 
