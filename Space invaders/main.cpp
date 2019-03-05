@@ -1,6 +1,8 @@
 #include "Libraries.h"
 
 #define FPS 120
+#define ALTEZZA 1080
+#define LARGHEZZA 1920
 
 void easter_egg(ALLEGRO_DISPLAY* display)
 {
@@ -10,30 +12,30 @@ void easter_egg(ALLEGRO_DISPLAY* display)
 	al_rest(5);
 }
 
-double transformation(double& res_y)
-{
-	//ALLEGRO_TRANSFORM scaling;
-	//ALLEGRO_MONITOR_INFO info;
-	//ALLEGRO_DISPLAY_MODE info;
-	al_get_display_mode(0 , &info);
-	/*int res_monitor_x; 
-	double res_monitor_y;
-	al_get_monitor_info(0, &info);
-	res_monitor_x = info.x2 - info.x1;
-	res_monitor_y = info.y2 - info.y1;
-	res_x = res_monitor_x / (double)LARGHEZZA;
-	res_y = res_monitor_y / (double)ALTEZZA;*/
-
-	res_y = info.height;
-
-	return info.width;
-}
+//double transformation(double& res_y)
+//{
+//	//ALLEGRO_TRANSFORM scaling;
+//	//ALLEGRO_MONITOR_INFO info;
+//	//ALLEGRO_DISPLAY_MODE info;
+//	/al_get_display_mode(0 , &info);
+//	/*int res_monitor_x; 
+//	double res_monitor_y;
+//	al_get_monitor_info(0, &info);
+//	res_monitor_x = info.x2 - info.x1;
+//	res_monitor_y = info.y2 - info.y1;
+//	res_x = res_monitor_x / (double)LARGHEZZA;
+//	res_y = res_monitor_y / (double)ALTEZZA;*/
+//
+//	res_y = info.height;
+//
+//	return info.width;
+//}
 
 
 int main(int argc, char **argv)
 {
-	double ALTEZZA = 1080;
-	double LARGHEZZA = transformation(ALTEZZA);
+	/*double ALTEZZA = 1080;
+	double LARGHEZZA = transformation(ALTEZZA);*/
 	
 	if (!al_init())
 	{

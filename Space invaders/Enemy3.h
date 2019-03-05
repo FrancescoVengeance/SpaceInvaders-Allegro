@@ -1,7 +1,7 @@
 #ifndef NEMICO_FORTE_H
 #define NEMICO_FORTE_H
 
-#include "NemicoMedio.h"
+#include "Enemy2.h"
 
 class Nemico3 : public Nemico
 {

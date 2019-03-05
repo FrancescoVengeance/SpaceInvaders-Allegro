@@ -11,7 +11,7 @@
 //#include "NemicoMedio.h"
 //#include "Weapon.h"
 #include "Weapon.h"
-#include "NemicoForte.h"
+#include "Enemy3.h"
 #include "Player.h"
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>

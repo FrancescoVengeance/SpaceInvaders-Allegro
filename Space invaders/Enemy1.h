@@ -2,7 +2,7 @@
 #define NEMICO_SCARSO_H
 
 //nemico più debole di tutti
-#include "Nemico.h"
+#include "Enemy.h"
 
 class Nemico1 : public Nemico
 {

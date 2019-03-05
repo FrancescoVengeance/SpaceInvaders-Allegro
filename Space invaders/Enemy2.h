@@ -2,7 +2,7 @@
 #define NEMICO_MEDIO_H
 
 //nemico di media potenza
-#include "NemicoScarso.h"
+#include "Enemy1.h"
 
 class Nemico2 : public Nemico
 {

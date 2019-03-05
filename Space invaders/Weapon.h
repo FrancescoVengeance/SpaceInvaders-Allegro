@@ -32,7 +32,3 @@ public:
 	double y = 0;
 };
 #endif // !WEAPON_H
-
-
-
-138 108 264 162 114 120 264 162 66
