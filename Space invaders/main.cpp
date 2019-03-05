@@ -182,7 +182,7 @@ int main(int argc, char **argv)
 					}
 				}
 				//when the bound is reached enemies change direction
-				if (nemico[0][colonne - 1]->x >= LARGHEZZA-100 && nemico[0][colonne-1]->getDraw()) motion = false;
+				if (nemico[0][colonne - 1]->x >= LARGHEZZA - 100 && nemico[0][colonne - 1]->getDraw()) { motion = false; }
 			}
 			else
 			{
