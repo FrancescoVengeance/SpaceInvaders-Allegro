@@ -58,7 +58,6 @@ int main(int argc, char **argv)
 	al_register_event_source(queue, al_get_keyboard_event_source()); 
 	al_register_event_source(queue, al_get_mouse_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
-	//al_register_event_source(queue, al_get_display_event_source(display)); //per chiudere la finestra premendo X
 	al_start_timer(timer);
 
 	ALLEGRO_BITMAP* sfondo = al_load_bitmap("Background.png"); //background
@@ -113,9 +112,6 @@ int main(int argc, char **argv)
 	cout << endl << endl;
 	///////////////////
 
-
-	//al_hide_mouse_cursor(display); //è tutto una truffa!
-
 	bool easter[3] = { false }; //for the easter egg
 	bool close = false; //to close the game
 	bool motion = true;
@@ -142,12 +138,7 @@ int main(int argc, char **argv)
 			cout << "x " << evento.mouse.x;
 			cout << " y " << evento.mouse.y << endl;
 		}
-
-		/*if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-		{
-			if ((evento.mouse.button & 1)) close = true; //1 rappresenta il tasto sinistro del mouse
-		}*/
-
+		
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_draw_bitmap(sfondo, 0, 0, 0);
 
@@ -169,7 +160,6 @@ int main(int argc, char **argv)
 			{
 				arma->y -= arma->getSpeed();
 				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
-				//cout <<"Y "<< arma->y << endl;
 				if ((arma->y <= 0) && arma != nullptr) //when the top of the screen is reached delete the weapon
 				{
 					shoot = false;
@@ -180,14 +170,6 @@ int main(int argc, char **argv)
 			if (al_key_down(&keyState, ALLEGRO_KEY_C)) easter[0] = true;
 			if (al_key_down(&keyState, ALLEGRO_KEY_A)) easter[1] = true;
 			if (al_key_down(&keyState, ALLEGRO_KEY_O)) easter[2] = true;
-			
-			/*for (unsigned i = 0; i < righe; i++)
-			{
-				for (unsigned j = 0; j < colonne; j++)
-				{
-					al_draw_bitmap(nemico[i][j]->getEnemyImage(), nemico[i][j]->x, nemico[i][j]->y, 1);
-				}
-			}*/
 
 			if (motion)
 			{
@@ -200,24 +182,10 @@ int main(int argc, char **argv)
 							nemico[i][j]->x += nemico[i][j]->getEnemySpeed();
 							al_draw_bitmap(nemico[i][j]->getEnemyImage(), nemico[i][j]->x, nemico[i][j]->y, 1);
 						}
-						/*if (arma != nullptr)
-						{
-				            if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + al_get_bitmap_width(nemico[i][j]->getEnemyImage()))
-							{
-								cout << "COLPITO " << nemico[i][j]->x<<" "<<nemico[i][j]->y << endl;
-								//nemico[i][j]->setDraw(false);
-								//delete arma;
-								//arma = nullptr;
-							}
-						}*/
 					}
 				}
 				//when the bound is reached enemies change direction
-				if (nemico[l][colonne - 1]->x >= LARGHEZZA-100 && nemico[0][colonne-1]->getDraw()) motion = false;
-				/*else if(l<righe && !nemico[l][colonne-1]->getDraw())
-				{
-					l++;
-				}*/
+				if (nemico[0][colonne - 1]->x >= LARGHEZZA-100 && nemico[0][colonne-1]->getDraw()) motion = false;
 			}
 			else
 			{
