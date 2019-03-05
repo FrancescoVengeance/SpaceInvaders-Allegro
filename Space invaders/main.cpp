@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 		al_show_native_message_box(NULL, "ERRORE", "ERRORE", "NON INIZIALIZZATO", "OK", ALLEGRO_MESSAGEBOX_ERROR);
 	}
 
+	cout << "ciao" << endl;
 	//addon's initialization
 	al_init_image_addon();
 	al_install_keyboard();
