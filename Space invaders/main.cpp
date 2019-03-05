@@ -182,6 +182,8 @@ int main(int argc, char **argv)
 					al_clear_to_color(al_map_rgb(255, 0, 0)); 
 					al_flip_display();
 					cout << "asd" << endl;
+
+					cout << "asd" << endl;
 					//check other controls on y etc...
 					
 				}
