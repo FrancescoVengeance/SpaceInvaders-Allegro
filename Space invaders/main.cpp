@@ -12,6 +12,7 @@ void easter_egg(ALLEGRO_DISPLAY* display) //function for an future easter egg
 	al_rest(5);
 }
 
+
 //double transformation(double& res_y)
 //{
 //	//ALLEGRO_TRANSFORM scaling;
@@ -51,7 +52,7 @@ int main(int argc, char **argv)
 	al_install_audio();
 	al_init_acodec_addon();
 
-	al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+	//al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 	ALLEGRO_DISPLAY* display = al_create_display(LARGHEZZA, ALTEZZA);
 	ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
 
@@ -132,6 +133,9 @@ int main(int argc, char **argv)
 		DIRECTION direction = OTHER; //direction that I pass to the getPlayerImage()
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
+			
+		cout << "valore y di nemico -> " << nemico[0][0]->y << " " << "valore di x di nemico -> " << nemico[0][0]->x << " " << endl;
+		//al_rest(2.0);
 
 		if (easter[0] && easter[1] && easter[2]) //trigger the easter egg event
 		{
@@ -141,8 +145,8 @@ int main(int argc, char **argv)
 
 		if (evento.type == ALLEGRO_EVENT_MOUSE_AXES)
 		{
-			cout << "x " << evento.mouse.x;
-			cout << " y " << evento.mouse.y << endl;
+			//cout << "x " << evento.mouse.x;
+			//cout << " y " << evento.mouse.y << endl;
 		}
 
 		/*if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
@@ -170,7 +174,18 @@ int main(int argc, char **argv)
 			if (shoot)
 			{
 				arma->y -= arma->getSpeed();
+				
+
 				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
+				
+				if (arma->x >= (nemico[4][0]->x) && arma->x <= (nemico[4][0]->x)+100) { //test for first enemy 4th row , zero col 40 
+					al_clear_to_color(al_map_rgb(255, 0, 0)); 
+					al_flip_display();
+					//check other controls on y etc...
+					
+				}
+
+
 				//cout <<"Y "<< arma->y << endl;
 				if ((arma->y <= 0) && arma != nullptr) //when the top of the screen is reached delete the weapon
 				{
