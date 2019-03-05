@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	//al_register_event_source(queue, al_get_display_event_source(display)); //per chiudere la finestra premendo X
 	al_start_timer(timer);
 
-	ALLEGRO_BITMAP* sfondo = al_load_bitmap("sfondo.png"); //background
+	ALLEGRO_BITMAP* sfondo = al_load_bitmap("Background.png"); //background
 
 	Player giocatore;
 
