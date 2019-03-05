@@ -33,6 +33,7 @@ public:
 		for (unsigned i = 0; i < 3; i++)
 		{
 			al_destroy_bitmap(immagine[i]);
+			cout << "Giocatore distrutto " << i << endl;
 		}
 	}
 
