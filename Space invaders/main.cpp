@@ -33,17 +33,12 @@ void easter_egg(ALLEGRO_DISPLAY* display) //function for an future easter egg
 
 
 int main(int argc, char **argv)
-{
-	/*double ALTEZZA = 1080;
-	double LARGHEZZA = transformation(ALTEZZA);*/
-	
+{	
 	if (!al_init())
 	{
 		al_show_native_message_box(NULL, "ERRORE", "ERRORE", "NON INIZIALIZZATO", "OK", ALLEGRO_MESSAGEBOX_ERROR);
 	}
 
-	cout << "ciao" << endl;
-	//ghfdgd
 	//addon's initialization
 	al_init_image_addon();
 	al_install_keyboard();
