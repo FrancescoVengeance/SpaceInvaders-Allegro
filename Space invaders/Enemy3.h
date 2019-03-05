@@ -8,7 +8,7 @@ class Nemico3 : public Nemico
 public:
 	Nemico3() : Nemico(10, 8, 2.00)
 	{
-		immagine = al_load_bitmap("Nemico3.png");
+		immagine = al_load_bitmap("Enemy3.png");
 	}
 	~Nemico3() override { al_destroy_bitmap(immagine); cout << "distrutto Nemico3" << endl; }
 
