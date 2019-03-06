@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.x -= giocatore.getPlayerSpeed(); direction = LEFT; }
 			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) { giocatore.x += giocatore.getPlayerSpeed(); direction = RIGHT; }
 			
-			//gestire a rand-time lo shoot dei nemici
+			//*******GESTIRE WHILE , SI BLOCCA QUANDO RESTA UN SOLO NEMICO**************//
 			if (enemyshoot == false) {//test arma nemico
 
 				//bool ESCI = true;
