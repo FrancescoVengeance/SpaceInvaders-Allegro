@@ -1,5 +1,5 @@
 #include "Libraries.h"
-
+#include <vector> //eliminare
 #define FPS 120 
 #define ALTEZZA 1080 //height
 #define LARGHEZZA 1920 //width
@@ -125,8 +125,11 @@ int main(int argc, char **argv)
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
 			
-		cout << "valore y di nemico -> " << nemico[0][0]->y << " " << "valore di x di nemico -> " << nemico[0][0]->x << " " << endl;
-		//al_rest(2.0);
+		/*cout << "valore x di nemico -> " << nemico[0][0]->x << " " << "valore di y di nemico -> " << nemico[0][0]->y<< " " << endl;
+		cout << "valore x di nemico -> " << nemico[1][0]->x << " " << "valore di y di nemico -> " << nemico[1][0]->y << " " << endl;
+		cout << "valore x di nemico -> " << nemico[2][0]->x << " " << "valore di y di nemico -> " << nemico[2][0]->y << " " << endl;
+		cout << "valore x di nemico -> " << nemico[3][0]->x << " " << "valore di y di nemico -> " << nemico[3][0]->y << " " << endl;
+		al_rest(2.0);*/
 
 		if (easter[0] && easter[1] && easter[2]) //trigger the easter egg event
 		{
@@ -164,15 +167,36 @@ int main(int argc, char **argv)
 
 				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
 				
-				if (arma->x >= (nemico[4][0]->x) && arma->x <= (nemico[4][0]->x)+100) { //test for first enemy 4th row , zero col 40 
-					al_clear_to_color(al_map_rgb(255, 0, 0)); 
-					al_flip_display();
-					cout << "asd" << endl;
+				//**DA CONTROLLARE**//
+				//fare un for dal down to up
+				
+				vector<pair<int, int>>coords;
+				//coords.push_back(make_pair(nemico[4][0]->x, nemico[4][0]->y));
 
-					cout << "asd" << endl;
-					//check other controls on y etc...
-					
+				//if (arma->x >= coords[0].first && arma->x <= coords[0].first + 100) { nemico[4][0]->setDraw(false); }
+
+				//**CONTROLLI COLLISIONI DA VEDERE**//
+				for (int i = righe - 1; i >= 0; i--) {
+					//cout << "value of i: " << i << endl;
+					for (int j = 0; j < colonne; j++) {
+						coords.push_back(make_pair(nemico[i][j]->x, nemico[i][j]->y));
+					}
 				}
+				//method update coords, GESTIRE DELETE E CONTROLLI SU Y
+				for (int i = 0; i < coords.size(); i++) {
+					bool killed = false;
+					if (arma->x >= coords[i].first && arma->x <= coords[i].first + 100 /*&& arma->y == coords[i].second+100*/) {
+						if (i < 10) { nemico[4][i]->setDraw(false); killed = true; break; }
+						else if (i >= 10 && i < 20) { nemico[3][i % 10]->setDraw(false);killed = true; break; }
+						else if (i >= 20 && i < 30) { nemico[2][i%10]->setDraw(false); killed = true; break; }
+						else if(i>=30 && i<40){ nemico[1][i%10]->setDraw(false); killed = true; break; }
+						else if(i>=40 && i<50){ nemico[0][i%10]->setDraw(false); killed = true; break; }
+					}
+					if (killed == true) { break; }
+				}
+				//**FINE CONTROLLI COLLISIONI**//
+				
+				
 
 
 				//cout <<"Y "<< arma->y << endl;
@@ -182,7 +206,7 @@ int main(int argc, char **argv)
 					delete arma;
 					arma = nullptr;
 				}
-			}
+			}//end of shoot
 			if (al_key_down(&keyState, ALLEGRO_KEY_C)) easter[0] = true;
 			if (al_key_down(&keyState, ALLEGRO_KEY_A)) easter[1] = true;
 			if (al_key_down(&keyState, ALLEGRO_KEY_O)) easter[2] = true;
@@ -193,11 +217,13 @@ int main(int argc, char **argv)
 				{
 					for (unsigned j = 0; j < colonne; j++)
 					{
-						if (nemico[i][j]->getDraw())
-						{
-							nemico[i][j]->x += nemico[i][j]->getEnemySpeed();
-							al_draw_bitmap(nemico[i][j]->getEnemyImage(), nemico[i][j]->x, nemico[i][j]->y, 1);
-						}
+						
+							if (nemico[i][j]->getDraw())
+							{
+								nemico[i][j]->x += nemico[i][j]->getEnemySpeed();
+								al_draw_bitmap(nemico[i][j]->getEnemyImage(), nemico[i][j]->x, nemico[i][j]->y, 1);
+							}
+						
 					}
 				}
 				//when the bound is reached enemies change direction
