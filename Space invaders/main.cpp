@@ -4,6 +4,15 @@
 #define ALTEZZA 1080 //height
 #define LARGHEZZA 1920 //width
 
+//note
+/*
+power up
+1) velocità
+2) scudo attivabile o non...
+*/
+
+
+
 void easter_egg(ALLEGRO_DISPLAY* display) //function for an future easter egg
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -46,8 +55,10 @@ int main(int argc, char **argv)
 	al_install_mouse();
 	al_install_audio();
 	al_init_acodec_addon();
+	al_init_font_addon(); // initialize the font addon
+	al_init_ttf_addon();// initialize the ttf 
 
-	//al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 	ALLEGRO_DISPLAY* display = al_create_display(LARGHEZZA, ALTEZZA);
 	ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
 
@@ -59,8 +70,17 @@ int main(int argc, char **argv)
 	al_start_timer(timer);
 
 	ALLEGRO_BITMAP* sfondo = al_load_bitmap("Background.png"); //background
-
+	ALLEGRO_FONT *font = al_load_ttf_font("Roboto-Black.ttf", 72, 0);
+	
 	Player giocatore;
+	int vite = giocatore.getLife();
+	
+	/*stringstream strs;
+	strs << vite;
+	string temp_str = strs.str();
+	char * char_type = (char *)temp_str.c_str();*/
+	
+
 
 	const unsigned righe = 5; //matrix's lines
 	const unsigned colonne = 9; //matrix's columns
@@ -128,15 +148,12 @@ int main(int argc, char **argv)
 	
 	while (!close) 
 	{
+		
 		DIRECTION direction = OTHER; //direction that I pass to the getPlayerImage()
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
 			
-		/*cout << "valore x di nemico -> " << nemico[0][0]->x << " " << "valore di y di nemico -> " << nemico[0][0]->y<< " " << endl;
-		cout << "valore x di nemico -> " << nemico[1][0]->x << " " << "valore di y di nemico -> " << nemico[1][0]->y << " " << endl;
-		cout << "valore x di nemico -> " << nemico[2][0]->x << " " << "valore di y di nemico -> " << nemico[2][0]->y << " " << endl;
-		cout << "valore x di nemico -> " << nemico[3][0]->x << " " << "valore di y di nemico -> " << nemico[3][0]->y << " " << endl;
-		al_rest(2.0);*/
+		
 
 		if (easter[0] && easter[1] && easter[2]) //trigger the easter egg event
 		{
@@ -155,6 +172,14 @@ int main(int argc, char **argv)
 		
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
+			//test print vite
+			stringstream strs;
+			strs << vite;
+			string temp_str = strs.str();
+			char * char_type = (char *)temp_str.c_str();
+			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE,char_type);//test per print vite
+			//fine test vite
+
 			al_get_keyboard_state(&keyState);
 			if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE)) close = true; //when esc is pressed game will end
 			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.x -= giocatore.getPlayerSpeed(); direction = LEFT; }
@@ -194,26 +219,33 @@ int main(int argc, char **argv)
 
 			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) //shooting pressinf space key
 			{ 
+				
 				shoot = true;
 				arma = new Weapon;
 				arma->x = giocatore.x + 72;
 				arma->y = giocatore.getY();
+				
 			}
 
 			
 
-			if (armanemico != nullptr && enemyshoot == true) { //shoot del nemico
+			if (armanemico != nullptr && enemyshoot == true) { //shoot del nemico verso il giocatore
+				bool playerShooted = false;
 				armanemico->y += armanemico->getSpeed();
 				al_draw_bitmap(armanemico->getWeaponImage(), armanemico->x, armanemico->y, 1);
-				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y >= giocatore.getY()) { //weapon to enemy ok
+				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y == giocatore.getY()+100) { 
 					//player killed
+					//gestire qui le vite , gestire meglio collisione (?)
+					playerShooted = true;
 					al_clear_to_color(al_map_rgb(255, 0, 0)); 
 					al_flip_display();
+					
 				}
-				if (armanemico->y >= 1080 && armanemico != nullptr) { delete armanemico; armanemico = nullptr;}
+				if (playerShooted == true) { vite--;}
+				if (armanemico->y >= 1080 && armanemico != nullptr && playerShooted==false) { delete armanemico; armanemico = nullptr;}
 				
 			}
-			if (armanemico == nullptr) {
+			if (armanemico == nullptr) {//gestione random shoot nemico
 				numero = rand() % 100 + 1;
 				if (numero == 3) { enemyshoot = false; }
 			}
