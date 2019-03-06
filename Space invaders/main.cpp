@@ -117,8 +117,15 @@ int main(int argc, char **argv)
 
 	unsigned l = 0; //serve per cambiare riga quando viene distrutto un nemico
 	bool leggi = false;
+	bool enemyshoot = false; //gestire
 	Weapon* arma = nullptr;
-
+	Weapon* armanemico = nullptr;//gestita dopo
+	srand(time(NULL));
+	//int numero = rand() % 4 + 1; //genera uno o
+	int numero; //da gestire 
+	int row_enemy;//da gestire 
+	int column_enemy;//da gestire 
+	
 	while (!close) 
 	{
 		DIRECTION direction = OTHER; //direction that I pass to the getPlayerImage()
@@ -145,7 +152,7 @@ int main(int argc, char **argv)
 		
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_draw_bitmap(sfondo, 0, 0, 0);
-
+		
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
 			al_get_keyboard_state(&keyState);
@@ -153,6 +160,38 @@ int main(int argc, char **argv)
 			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.x -= giocatore.getPlayerSpeed(); direction = LEFT; }
 			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) { giocatore.x += giocatore.getPlayerSpeed(); direction = RIGHT; }
 			
+			//gestire a rand-time lo shoot dei nemici
+			if (enemyshoot == false) {//test arma nemico
+
+				//bool ESCI = true;
+				//while (ESCI) { //da controllare
+					row_enemy = rand() % 5 + 0;
+					column_enemy = rand() % 9 + 0;
+				if (nemico[row_enemy][column_enemy]->getDraw()) {
+					//fare controlli per sparare...
+
+					if (row_enemy == righe-1) { //se sto controllando l ultima riga...
+						armanemico = new Weapon;
+						armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
+						armanemico->y = nemico[row_enemy][column_enemy]->y;
+						enemyshoot = true;
+					}
+					else {
+						if (nemico[row_enemy + 1][column_enemy]->getDraw() == false) { //se sotto quel nemico non cè nessuno spara...
+							armanemico = new Weapon;
+							armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
+							armanemico->y = nemico[row_enemy][column_enemy]->y;
+							enemyshoot = true;
+						}
+					}
+					//ESCI= false;
+						 
+				//}
+			}
+				//fine test arma nemico
+			}
+
+
 			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) //shooting pressinf space key
 			{ 
 				shoot = true;
@@ -160,6 +199,28 @@ int main(int argc, char **argv)
 				arma->x = giocatore.x + 72;
 				arma->y = giocatore.getY();
 			}
+
+			
+
+			if (armanemico != nullptr && enemyshoot == true) { //shoot del nemico
+				armanemico->y += armanemico->getSpeed();
+				al_draw_bitmap(armanemico->getWeaponImage(), armanemico->x, armanemico->y, 1);
+				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y >= giocatore.getY()) { //weapon to enemy ok
+					//player killed
+					al_clear_to_color(al_map_rgb(255, 0, 0)); 
+					al_flip_display();
+				}
+				if (armanemico->y >= 1080 && armanemico != nullptr) { delete armanemico; armanemico = nullptr;}
+				
+			}
+			if (armanemico == nullptr) {
+				numero = rand() % 100 + 1;
+				if (numero == 3) { enemyshoot = false; }
+			}
+			//fine gestione arma nemici
+			
+
+
 			if (shoot)
 			{
 				arma->y -= arma->getSpeed();
@@ -168,37 +229,23 @@ int main(int argc, char **argv)
 				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
 				
 				//**DA CONTROLLARE**//
-				//fare un for dal down to up
 				
-				vector<pair<int, int>>coords;
-				//coords.push_back(make_pair(nemico[4][0]->x, nemico[4][0]->y));
-
-				//if (arma->x >= coords[0].first && arma->x <= coords[0].first + 100) { nemico[4][0]->setDraw(false); }
-
-				//**CONTROLLI COLLISIONI DA VEDERE**//
-				for (int i = righe - 1; i >= 0; i--) {
-					//cout << "value of i: " << i << endl;
+				//gestione collisione ok
+				for (int i = righe - 1; i >= 0; i--) { //collisone weapon player con nemici
+					bool shooted = false;
+					int vx, vy;
 					for (int j = 0; j < colonne; j++) {
-						coords.push_back(make_pair(nemico[i][j]->x, nemico[i][j]->y));
+						if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + 100 && arma->y <= nemico[i][j]->y + 100 && nemico[i][j]->getDraw()==true) {
+							shooted = true;
+							vx = i;
+							vy = j;
+							break;
+						}
 					}
-				}
-				//method update coords, GESTIRE DELETE E CONTROLLI SU Y
-				for (int i = 0; i < coords.size(); i++) {
-					bool killed = false;
-					if (arma->x >= coords[i].first && arma->x <= coords[i].first + 100 /*&& arma->y == coords[i].second+100*/) {
-						if (i < 10) { nemico[4][i]->setDraw(false); killed = true; break; }
-						else if (i >= 10 && i < 20) { nemico[3][i % 10]->setDraw(false);killed = true; break; }
-						else if (i >= 20 && i < 30) { nemico[2][i%10]->setDraw(false); killed = true; break; }
-						else if(i>=30 && i<40){ nemico[1][i%10]->setDraw(false); killed = true; break; }
-						else if(i>=40 && i<50){ nemico[0][i%10]->setDraw(false); killed = true; break; }
-					}
-					if (killed == true) { break; }
-				}
-				//**FINE CONTROLLI COLLISIONI**//
-				
-				
+					if (shooted == true) { nemico[vx][vy]->setDraw(false); shoot = false;  break; }
 
-
+				}
+				//**FINE CONTROLLI COLLISIONI***//
 				//cout <<"Y "<< arma->y << endl;
 				if ((arma->y <= 0) && arma != nullptr) //when the top of the screen is reached delete the weapon
 				{
@@ -217,12 +264,13 @@ int main(int argc, char **argv)
 				{
 					for (unsigned j = 0; j < colonne; j++)
 					{
-						
+						if (nemico[i][j] != nullptr) {
 							if (nemico[i][j]->getDraw())
 							{
 								nemico[i][j]->x += nemico[i][j]->getEnemySpeed();
 								al_draw_bitmap(nemico[i][j]->getEnemyImage(), nemico[i][j]->x, nemico[i][j]->y, 1);
 							}
+						}
 						
 					}
 				}
