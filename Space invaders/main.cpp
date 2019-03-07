@@ -21,7 +21,6 @@ void easter_egg(ALLEGRO_DISPLAY* display) //function for an future easter egg
 	al_rest(5);
 }
 
-
 //double transformation(double& res_y)
 //{
 //	//ALLEGRO_TRANSFORM scaling;
@@ -145,7 +144,6 @@ int main(int argc, char **argv)
 	int numero; //da gestire 
 	int row_enemy;//da gestire 
 	int column_enemy;//da gestire 
-	
 	while (!close) 
 	{
 		
@@ -153,8 +151,6 @@ int main(int argc, char **argv)
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
 			
-		
-
 		if (easter[0] && easter[1] && easter[2]) //trigger the easter egg event
 		{
 			close = true;
@@ -176,7 +172,7 @@ int main(int argc, char **argv)
 			stringstream strs;
 			strs << vite;
 			string temp_str = strs.str();
-			char * char_type = (char *)temp_str.c_str();
+			char* char_type = (char *)temp_str.c_str();
 			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE,char_type);//test per print vite
 			//fine test vite
 
@@ -237,8 +233,8 @@ int main(int argc, char **argv)
 					//player killed
 					//gestire qui le vite , gestire meglio collisione (?)
 					playerShooted = true;
-					al_clear_to_color(al_map_rgb(255, 0, 0)); 
-					al_flip_display();
+					/*al_clear_to_color(al_map_rgb(255, 0, 0)); 
+					al_flip_display();*/
 					
 				}
 				if (playerShooted == true) { vite--;}
