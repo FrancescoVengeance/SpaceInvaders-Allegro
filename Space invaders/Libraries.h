@@ -12,6 +12,8 @@
 #include "Weapon.h"
 #include "Enemy3.h"
 #include "Player.h"
+#include "Barrier.h"
+#include "GameManager.h"
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_font.h>
