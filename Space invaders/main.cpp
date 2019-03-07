@@ -75,10 +75,21 @@ int main(int argc, char **argv)
 	Player giocatore;
 	int vite = giocatore.getLife();
 	
-	/*stringstream strs;
-	strs << vite;
-	string temp_str = strs.str();
-	char * char_type = (char *)temp_str.c_str();*/
+	//gestione barriere
+	Barrier* barriere[3]; //***** da fare la delete
+	
+	for (int i = 0; i < 3; i++) {
+		barriere[i] = new Barrier;
+	}
+
+	for (int i = 1; i < 3; i++) {
+		//stabilire posizione
+		barriere[i]->x = barriere[i - 1]->x + al_get_bitmap_width(barriere[i]->getBarrierImage()) + 100;
+	}
+
+	//fine gestione barriera
+	
+	
 	
 
 
@@ -172,7 +183,13 @@ int main(int argc, char **argv)
 		
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
-			//test print vite
+			//test stampa barriere
+			for (int i = 0; i < 3; i++) {
+				al_draw_bitmap(barriere[i]->getBarrierImage(),barriere[i]->x, barriere[i]->y, 1);
+			}
+			//fine test stampa barriere
+			
+			//gestione vite
 			stringstream strs;
 			strs << vite;
 			string temp_str = strs.str();
@@ -187,11 +204,8 @@ int main(int argc, char **argv)
 			
 			//*******GESTIRE WHILE , SI BLOCCA QUANDO RESTA UN SOLO NEMICO**************//
 			if (enemyshoot == false) {//test arma nemico
-
-				//bool ESCI = true;
-				//while (ESCI) { //da controllare
-					row_enemy = rand() % 5 + 0;
-					column_enemy = rand() % 9 + 0;
+				row_enemy = rand() % 5 + 0;
+				column_enemy = rand() % 9 + 0;
 				if (nemico[row_enemy][column_enemy]->getDraw()) {
 					//fare controlli per sparare...
 
@@ -209,12 +223,9 @@ int main(int argc, char **argv)
 							enemyshoot = true;
 						}
 					}
-					//ESCI= false;
-						 
-				//}
-			}
+				}
 				//fine test arma nemico
-			}
+			}//fine if enemyshoot
 
 
 			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) //shooting pressinf space key
@@ -243,11 +254,14 @@ int main(int argc, char **argv)
 				}
 				if (playerShooted == true) { vite--;}
 				if (armanemico->y >= 1080 && armanemico != nullptr && playerShooted==false) { delete armanemico; armanemico = nullptr;}
-				
+				//if (armanemico->x >= barriere[0]->x && armanemico->x <= barriere[0]->x + 100 && armanemico->y == barriere[0]->y+100) {
+					//al_clear_to_color(al_map_rgb(0, 255, 0));
+					//al_flip_display();
+				//}
 			}
 			if (armanemico == nullptr) {//gestione random shoot nemico
 				numero = rand() % 100 + 1;
-				if (numero == 3) { enemyshoot = false; }
+				if (numero == 3) { enemyshoot = false; } //3 numero casuale, quando il numero è uguale a 3 attiva lo shoot dei nemici casuali
 			}
 			//fine gestione arma nemici
 			
