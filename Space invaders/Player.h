@@ -22,7 +22,6 @@ public:
 		immagine[0] = al_load_bitmap("Player.png");
 		immagine[1] = al_load_bitmap("Player1.png");
 		immagine[2] = al_load_bitmap("Player2.png");
-		life = 3;
 	}
 
 	~Player()
