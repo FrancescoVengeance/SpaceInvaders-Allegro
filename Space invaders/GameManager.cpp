@@ -94,7 +94,7 @@ bool GameManager::menu()
 	al_draw_bitmap(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2)-50, 0);
 	al_draw_bitmap(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175 , 0);
 	al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
-	if (al_key_down(&keyState, ALLEGRO_KEY_1)) return true;
+	if (al_key_down(&keyState, ALLEGRO_KEY_1)) { return true };
 	al_flip_display();
 	return false;
 }
