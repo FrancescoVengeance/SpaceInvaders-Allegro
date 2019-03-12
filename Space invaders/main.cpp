@@ -10,10 +10,10 @@ power up
 int main(int argc, char **argv)
 {
 	GameManager game;
-	bool closeMenu = false;
-	while (!closeMenu)
+	bool close = false;
+	while (!close)
 	{
-		closeMenu = game.menu();
+		close = game.menu();
 	}
 	game.level1();
 	return 0;

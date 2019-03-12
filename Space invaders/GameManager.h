@@ -12,12 +12,17 @@ class GameManager
 		ALLEGRO_BITMAP* gameBackground = nullptr;
 		ALLEGRO_BITMAP* menuText = nullptr;
 		ALLEGRO_BITMAP* startButton = nullptr;
+		ALLEGRO_BITMAP* startButtonPressed = nullptr;
 		ALLEGRO_BITMAP* optionButton = nullptr;
+		ALLEGRO_BITMAP* optionButtonPressed = nullptr;
 		ALLEGRO_BITMAP* escButton = nullptr;
+		ALLEGRO_BITMAP* escButtonPressed = nullptr;
 		ALLEGRO_FONT* font = nullptr;
 		ALLEGRO_DISPLAY* display = nullptr;
 		ALLEGRO_EVENT_QUEUE* queue = nullptr;
+		ALLEGRO_EVENT_QUEUE* queue2 = nullptr;
 		ALLEGRO_KEYBOARD_STATE keyState;
+		ALLEGRO_MOUSE_STATE mouseState;
 		ALLEGRO_TIMER* timer = nullptr;
 		Barrier* barriere[3];
 		bool close = false; //to close the game
@@ -34,6 +39,7 @@ class GameManager
 		bool easter[3] = { false }; //for the easter egg
 		bool enemies_initialize(Nemico*[][9], int, int);
 		void winScreen();
+		
 
 	public:
 		GameManager();
@@ -41,5 +47,6 @@ class GameManager
 		
 		bool menu();
 		void level1();
+		
 };
 #endif

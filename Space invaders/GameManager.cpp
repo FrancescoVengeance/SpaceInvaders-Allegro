@@ -28,12 +28,16 @@ GameManager::GameManager()
 	display = al_create_display(LARGHEZZA, ALTEZZA);
 	timer = al_create_timer(1.0 / FPS);
 	queue = al_create_event_queue();
+	queue2 = al_create_event_queue();
 	menuBackground = al_load_bitmap("MenuBackground.png");
 	gameBackground = al_load_bitmap("Background.png"); //background
 	menuText = al_load_bitmap("spaceInvadersMenu.png");
 	startButton = al_load_bitmap("startButton.png");
+	startButtonPressed = al_load_bitmap("startButtonPressed.png");
 	escButton = al_load_bitmap("exitButton.png");
+	escButtonPressed = al_load_bitmap("exitButtonPressed.png");
 	optionButton = al_load_bitmap("optionButton.png");
+	optionButtonPressed = al_load_bitmap("optionButtonPressed.png");
 	font = al_load_ttf_font("alien.ttf", 72, 0);
 	cout << "game manager creato" << endl;
 	
@@ -46,10 +50,14 @@ GameManager::~GameManager()
 		delete barriere[i];
 	}
 	al_destroy_event_queue(queue);
+	al_destroy_event_queue(queue2);
 	al_destroy_bitmap(menuBackground);
 	al_destroy_bitmap(gameBackground);
 	al_destroy_bitmap(optionButton);
+	al_destroy_bitmap(optionButtonPressed);
 	al_destroy_bitmap(escButton);
+	al_destroy_bitmap(escButtonPressed);
+	al_destroy_bitmap(startButtonPressed);
 	al_destroy_bitmap(startButton);
 	al_destroy_bitmap(menuText);
 	al_destroy_font(font);
@@ -86,17 +94,90 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], int righe, int colonne
 
 bool GameManager::menu()
 {
+	al_register_event_source(queue2, al_get_mouse_event_source());
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_get_keyboard_state(&keyState);
-	al_draw_bitmap(menuBackground, 0, 0, 1);
-	al_draw_bitmap(menuText,(LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2),50,0);
-	al_draw_bitmap(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2)-50, 0);
-	al_draw_bitmap(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175 , 0);
-	al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
-	if (al_key_down(&keyState, ALLEGRO_KEY_1)) { return true };
-	al_flip_display();
-	return false;
+	al_get_mouse_state(&mouseState);
+	
+	/*Nemico* nemico[3];
+	nemico[0] = new Nemico1;
+	nemico[1] = new Nemico2;
+	nemico[2] = new Nemico3;*/
+	
+	//bool close = false;
+	/*for (unsigned i = 0; i < 3; i++)
+	{
+		nemico[i]->y = rand() % ALTEZZA;
+	}*/
+
+	//while (!close)
+	//{
+		al_draw_bitmap(menuBackground, 0, 0, 1);
+
+		
+		/*for (unsigned i = 0; i < 3; i++)
+		{
+			if (nemico[i]->getDraw())
+			{
+				nemico[i]->x += nemico[i]->getEnemySpeed();
+				al_draw_bitmap(nemico[i]->getEnemyImage(), nemico[i]->x, nemico[i]->y, 1);
+			}
+		}*/
+
+		al_draw_bitmap(menuText, (LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2), 50, 0);
+
+		//start button
+		if (mouseState.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) &&
+			mouseState.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) + al_get_bitmap_width(startButtonPressed) &&
+			mouseState.y >= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 &&
+			mouseState.y <= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 + al_get_bitmap_height(startButtonPressed))
+
+		{
+			al_draw_bitmap(startButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2) - 50, 0);
+			if (al_mouse_button_down(&mouseState, 1)) return true;
+		}
+		else
+		{
+			al_draw_bitmap(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2) - 50, 0);
+		}
+
+		//option button
+		if (mouseState.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2) &&
+			mouseState.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2) + al_get_bitmap_width(optionButtonPressed) &&
+			mouseState.y >= (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175 &&
+			mouseState.y <= (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175 + al_get_bitmap_height(optionButtonPressed))
+
+		{
+			al_draw_bitmap(optionButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175, 0);
+		}
+		else
+		{
+			al_draw_bitmap(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175, 0);
+		}
+
+		//exit button
+		if (mouseState.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) &&
+			mouseState.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) + al_get_bitmap_width(escButton) &&
+			mouseState.y >= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 &&
+			mouseState.y <= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 + al_get_bitmap_height(escButton))
+
+		{
+			al_draw_bitmap(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+		}
+		else
+		{
+			al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+		}
+
+		al_flip_display();
+		return false;
+	//}
+
+	//for (unsigned i = 0; i < 3; i++)
+	//{
+	//	delete nemico[i];
+	//}
 }
 
 
@@ -163,12 +244,6 @@ void GameManager::level1()
 		{
 			close = true;
 			easter_egg(display);
-		}*/
-
-		/*if (evento.type == ALLEGRO_EVENT_MOUSE_AXES)
-		{
-			//cout << "x " << evento.mouse.x;
-			//cout << " y " << evento.mouse.y << endl;
 		}*/
 
 		//gestione menu e scelta livelli
