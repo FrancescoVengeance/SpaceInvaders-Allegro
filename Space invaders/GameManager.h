@@ -10,6 +10,10 @@ class GameManager
 	private:
 		ALLEGRO_BITMAP* menuBackground = nullptr;
 		ALLEGRO_BITMAP* gameBackground = nullptr;
+		ALLEGRO_BITMAP* menuText = nullptr;
+		ALLEGRO_BITMAP* startButton = nullptr;
+		ALLEGRO_BITMAP* optionButton = nullptr;
+		ALLEGRO_BITMAP* escButton = nullptr;
 		ALLEGRO_FONT* font = nullptr;
 		ALLEGRO_DISPLAY* display = nullptr;
 		ALLEGRO_EVENT_QUEUE* queue = nullptr;
@@ -28,14 +32,14 @@ class GameManager
 		int row_enemy; //row poi generata casuale
 		int column_enemy; //column poi generata casuale
 		bool easter[3] = { false }; //for the easter egg
-		bool allegro_initialize();
 		bool enemies_initialize(Nemico*[][9], int, int);
+		void winScreen();
 
 	public:
 		GameManager();
 		~GameManager();
 		
-		void menu();
+		bool menu();
 		void level1();
 };
 #endif

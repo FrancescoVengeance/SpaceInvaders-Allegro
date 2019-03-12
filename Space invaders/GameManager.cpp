@@ -5,14 +5,36 @@
 
 GameManager::GameManager()
 {
-	cout << allegro_initialize() << endl;
+
+	if (!al_init())
+	{
+		al_show_native_message_box(NULL, "ERRORE", "ERRORE", "NON INIZIALIZZATO", "OK", ALLEGRO_MESSAGEBOX_ERROR);
+	}
+	if (!al_init_primitives_addon())
+	{
+		al_show_native_message_box(NULL, "ERRORE", "ERRORE", "NON INIZIALIZZATO", "OK", ALLEGRO_MESSAGEBOX_ERROR);
+	}
+
+	//addon's initialization
+	al_init_image_addon();
+	al_install_keyboard();
+	al_install_mouse();
+	al_install_audio();
+	al_init_acodec_addon();
+	al_init_font_addon(); // initialize the font addon
+	al_init_ttf_addon();// initialize the ttf 
+	
 	al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 	display = al_create_display(LARGHEZZA, ALTEZZA);
 	timer = al_create_timer(1.0 / FPS);
 	queue = al_create_event_queue();
 	menuBackground = al_load_bitmap("MenuBackground.png");
 	gameBackground = al_load_bitmap("Background.png"); //background
-	font = al_load_ttf_font("Roboto-Black.ttf", 72, 0);
+	menuText = al_load_bitmap("spaceInvadersMenu.png");
+	startButton = al_load_bitmap("startButton.png");
+	escButton = al_load_bitmap("exitButton.png");
+	optionButton = al_load_bitmap("optionButton.png");
+	font = al_load_ttf_font("alien.ttf", 72, 0);
 	cout << "game manager creato" << endl;
 	
 }
@@ -26,6 +48,10 @@ GameManager::~GameManager()
 	al_destroy_event_queue(queue);
 	al_destroy_bitmap(menuBackground);
 	al_destroy_bitmap(gameBackground);
+	al_destroy_bitmap(optionButton);
+	al_destroy_bitmap(escButton);
+	al_destroy_bitmap(startButton);
+	al_destroy_bitmap(menuText);
 	al_destroy_font(font);
 	al_destroy_timer(timer);
 	cout << "game manager distrutto" << endl;
@@ -58,43 +84,21 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], int righe, int colonne
 	return true;
 } 
 
-void GameManager::menu()
+bool GameManager::menu()
 {
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
-	bool close = false;
-	while (!close)
-	{
-		al_get_keyboard_state(&keyState);
-		al_draw_bitmap(menuBackground, 0, 0, 1);
-		if (al_key_down(&keyState, ALLEGRO_KEY_1)) close = true;
-		al_flip_display();
-	}
+	al_get_keyboard_state(&keyState);
+	al_draw_bitmap(menuBackground, 0, 0, 1);
+	al_draw_bitmap(menuText,(LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2),50,0);
+	al_draw_bitmap(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2)-50, 0);
+	al_draw_bitmap(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175 , 0);
+	al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+	if (al_key_down(&keyState, ALLEGRO_KEY_1)) return true;
+	al_flip_display();
+	return false;
 }
 
-bool GameManager::allegro_initialize() //private
-{
-	if (!al_init())
-	{
-		al_show_native_message_box(NULL, "ERRORE", "ERRORE", "NON INIZIALIZZATO", "OK", ALLEGRO_MESSAGEBOX_ERROR);
-		return false;
-	}
-	if (!al_init_primitives_addon())
-	{
-		return false;
-	}
-	//addon's initialization
-	al_init_image_addon();
-	al_install_keyboard();
-	al_install_mouse();
-	al_install_audio();
-
-	al_init_acodec_addon();
-	al_init_font_addon(); // initialize the font addon
-	al_init_ttf_addon();// initialize the ttf 
-	return true;
-}
 
 void GameManager::level1()
 {
@@ -104,7 +108,7 @@ void GameManager::level1()
 	al_start_timer(timer);
 	Player giocatore;
 
-	//gestione barriere
+	/*//gestione barriere
 	for (int i = 0; i < 3; i++) 
 	{
 		barriere[i] = new Barrier;
@@ -114,7 +118,7 @@ void GameManager::level1()
 	{
 		//stabilire posizione barriere
 		barriere[i]->x = barriere[i - 1]->x + al_get_bitmap_width(barriere[i]->getBarrierImage()) + 100;
-	}
+	}*/
 
 	//gestione traslate nemico
 	int xToStart = 200;
@@ -147,6 +151,8 @@ void GameManager::level1()
 	cout << enemies_initialize(nemico, righe, colonne) << endl;
 	srand(time(NULL));
 
+	short unsigned allEnemiesKilled = 0;
+	
 	while (!close)
 	{
 		DIRECTION direction = OTHER; //direction that I pass to the getPlayerImage()
@@ -179,10 +185,8 @@ void GameManager::level1()
 			}
 		}*/
 
-		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_draw_bitmap(gameBackground, 0, 0, 0);
 
-		cout << "scelta" << endl;
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
 			//test stampa barriere
@@ -199,22 +203,21 @@ void GameManager::level1()
 			strs << giocatore.getLife();
 			string temp_str = strs.str();
 			char * char_type = (char *)temp_str.c_str();
-			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE, char_type);//test per print vite
-			//fine test vite
+			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE, char_type);//life print test
 
 			al_get_keyboard_state(&keyState);
 			if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE)) close = true; //when esc is pressed game will end
 			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.x -= giocatore.getPlayerSpeed(); direction = LEFT; }
 			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) { giocatore.x += giocatore.getPlayerSpeed(); direction = RIGHT; }
 
-			//scelta random del nemico che deve sparare...
-			if (enemyshoot == false) //test arma nemico
+			//random choose enemy shoot
+			if (enemyshoot == false)
 			{
 				row_enemy = rand() % 5 + 0;
 				column_enemy = rand() % 9 + 0;
 				if (nemico[row_enemy][column_enemy]->getDraw()) 
 				{
-					if (row_enemy == righe - 1) //se sto controllando l ultima riga...
+					if (row_enemy == righe - 1) //if i'm cecking the last row
 					{ 
 						armanemico = new Weapon;
 						armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
@@ -223,7 +226,7 @@ void GameManager::level1()
 					}
 					else 
 					{
-						if (nemico[row_enemy + 1][column_enemy]->getDraw() == false) //se sotto quel nemico non cè nessuno spara...
+						if (nemico[row_enemy + 1][column_enemy]->getDraw() == false) //if under that enemy there's no one that shoot
 						{ 
 							armanemico = new Weapon;
 							armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
@@ -232,9 +235,7 @@ void GameManager::level1()
 						}
 					}
 				}
-				//fine test arma nemico
-			}//fine if enemyshoot
-
+			}
 
 			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) //shooting pressinf space key
 			{
@@ -245,18 +246,22 @@ void GameManager::level1()
 				arma->y = giocatore.getY();
 
 			}
-			if (armanemico != nullptr && enemyshoot == true) { //shoot del nemico verso il giocatore
+			if (armanemico != nullptr && enemyshoot == true) //shoot del nemico verso il giocatore
+			{ 
 				bool playerShooted = false;
 				armanemico->y += armanemico->getSpeed();
 				al_draw_bitmap(armanemico->getWeaponImage(), armanemico->x, armanemico->y, 1);
-				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y == giocatore.getY() + 150) {
+				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y == giocatore.getY() + 150) 
+				{
 					//player shooted
 					playerShooted = true;
-					al_clear_to_color(al_map_rgb(255, 0, 0));
-					al_flip_display();
 				}
-				if (playerShooted == true) { --giocatore; }//nemico colpito
-				if (armanemico->y >= 1080 && armanemico != nullptr && playerShooted == false) { delete armanemico; armanemico = nullptr; }
+				if (playerShooted == true) --giocatore; //nemico colpito
+				if (armanemico->y >= 1080 && armanemico != nullptr && playerShooted == false) 
+				{ 
+					delete armanemico; 
+					armanemico = nullptr; 
+				}
 				//gestire qui collisioni con barriera con un if(advancedMode)
 
 
@@ -273,25 +278,33 @@ void GameManager::level1()
 			if (shoot) //shoot by player
 			{
 				arma->y -= arma->getSpeed();
-
-
 				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
 
 				//**DA CONTROLLARE**//
 
-				//gestione collisione ok
-				for (int i = righe - 1; i >= 0; i--) { //collisone weapon player con nemici
+				//collision
+				for (int i = righe - 1; i >= 0; i--)  //collisone weapon player con nemici
+				{
 					bool shooted = false;
-					int vx, vy;
-					for (int j = 0; j < colonne; j++) {
-						if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + 100 && arma->y <= nemico[i][j]->y + 100 && nemico[i][j]->getDraw() == true) {
+					int vx;
+					int vy;
+					for (int j = 0; j < colonne; j++) 
+					{
+						if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + 100 && arma->y <= nemico[i][j]->y + 100 && nemico[i][j]->getDraw() == true) 
+						{
+							allEnemiesKilled++;
 							shooted = true;
 							vx = i;
 							vy = j;
 							break;
 						}
 					}
-					if (shooted == true) { nemico[vx][vy]->setDraw(false); shoot = false;  break; }
+					if (shooted == true) 
+					{ 
+						nemico[vx][vy]->setDraw(false); 
+						shoot = false;  
+						break;
+					}
 
 				}
 				//**FINE CONTROLLI COLLISIONI***//
@@ -325,22 +338,21 @@ void GameManager::level1()
 				}
 				//check translate to dx
 				int yToControl = -1;
-				for (int j = colonne - 1; j >= 0; j--) {
-					if (nemico[0][j]->getDraw()) {
+				for (int j = colonne - 1; j >= 0; j--) 
+				{
+					if (nemico[0][j]->getDraw()) 
+					{
 						yToControl = j;
 						break;
 					}
 				}
-				if (yToControl != -1 && nemico[0][yToControl]->getDraw()) {
-					//when the bound is reached enemies change direction
-					if (nemico[0][yToControl]->x >= LARGHEZZA - 100) {
+				if (yToControl != -1 && nemico[0][yToControl]->getDraw()) //when the bound is reached enemies change direction
+				{
+					if (nemico[0][yToControl]->x >= LARGHEZZA - 100) 
+					{
 						motion = false;
 					}
 				}
-
-
-				//when the bound is reached enemies change direction
-				//if (nemico[0][colonne - 1]->x >= LARGHEZZA - 100 && nemico[0][colonne - 1]->getDraw()) { motion = false; }
 			}
 			else
 			{
@@ -385,6 +397,13 @@ void GameManager::level1()
 			else al_draw_bitmap(giocatore.getPlayerImage(direction), giocatore.x, giocatore.getY(), 1);
 
 			al_flip_display();
+			//allEnemiesKilled = 45;
+			if (allEnemiesKilled == 45)
+			{
+				close = true;
+				winScreen();
+			}
+			
 
 		}//fine event timer
 	//}//fine choose
@@ -399,4 +418,17 @@ void GameManager::level1()
 			delete nemico[i][j];
 		}
 	}
+}
+
+void GameManager::winScreen()
+{
+	al_clear_to_color(al_map_rgb(0, 2, 45));
+	//al_draw_bitmap(al_load_bitmap("rullo.jpg"), 300, 300, 0);
+	stringstream strs;
+	strs << "YOU WIN";
+	string temp_str = strs.str();
+	char * char_type = (char *)temp_str.c_str();
+	al_draw_text(font, al_map_rgb(255, 0, 0), 200, 0, ALLEGRO_ALIGN_CENTRE, char_type);//life print test
+	al_flip_display();
+	al_rest(4);
 }
