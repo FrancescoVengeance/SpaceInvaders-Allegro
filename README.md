@@ -1,5 +1,5 @@
 # SpaceInvaders-Allegro
-# Version 0.3 BETA
+# Version 0.5 BETA
 Project for computer science OOP exam
 
 The following software is released "as is" and is shared under the GNU GPL 3.0 license.
