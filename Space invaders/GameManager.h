@@ -56,5 +56,6 @@ class GameManager
 		bool menu(bool&);
 		void level1();
 		
+		
 };
 #endif

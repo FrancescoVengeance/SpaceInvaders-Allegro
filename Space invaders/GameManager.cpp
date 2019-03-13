@@ -111,14 +111,11 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], int righe, int colonne
 
 bool GameManager::menu(bool& start)
 {
-	ALLEGRO_EVENT mouseEvent;
 	al_register_event_source(queue2, al_get_mouse_event_source());
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_get_keyboard_state(&keyState);
 	al_get_mouse_state(&mouseState);
-	al_wait_for_event(queue2, &mouseEvent);
-
 	
 	/*Nemico* nemico[3];
 	nemico[0] = new Nemico1;
@@ -133,9 +130,10 @@ bool GameManager::menu(bool& start)
 
 	while (!close)
 	{
+		ALLEGRO_EVENT mouseEvent;
+		al_wait_for_event(queue2, &mouseEvent);
 		al_draw_bitmap(menuBackground, 0, 0, 1);
 
-		
 		/*for (unsigned i = 0; i < 3; i++)
 		{
 			if (nemico[i]->getDraw())
