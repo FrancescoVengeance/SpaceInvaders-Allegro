@@ -11,10 +11,12 @@ int main(int argc, char **argv)
 {
 	GameManager game;
 	bool close = false;
+	bool start = true;
 	while (!close)
 	{
-		close = game.menu();
+		close = game.menu(start);
 	}
-	game.level1();
+	if(close && start) game.level1();
+	
 	return 0;
 }

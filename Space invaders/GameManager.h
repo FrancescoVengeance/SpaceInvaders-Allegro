@@ -10,13 +10,21 @@ class GameManager
 	private:
 		ALLEGRO_BITMAP* menuBackground = nullptr;
 		ALLEGRO_BITMAP* gameBackground = nullptr;
+
 		ALLEGRO_BITMAP* menuText = nullptr;
+
 		ALLEGRO_BITMAP* startButton = nullptr;
 		ALLEGRO_BITMAP* startButtonPressed = nullptr;
+		ALLEGRO_BITMAP* startButtonPressedLong = nullptr;
+
 		ALLEGRO_BITMAP* optionButton = nullptr;
 		ALLEGRO_BITMAP* optionButtonPressed = nullptr;
+		ALLEGRO_BITMAP* optionButtonPressedLong = nullptr;
+
 		ALLEGRO_BITMAP* escButton = nullptr;
 		ALLEGRO_BITMAP* escButtonPressed = nullptr;
+		ALLEGRO_BITMAP* escButtonPressedLong = nullptr;
+
 		ALLEGRO_FONT* font = nullptr;
 		ALLEGRO_DISPLAY* display = nullptr;
 		ALLEGRO_EVENT_QUEUE* queue = nullptr;
@@ -45,7 +53,7 @@ class GameManager
 		GameManager();
 		~GameManager();
 		
-		bool menu();
+		bool menu(bool&);
 		void level1();
 		
 };
