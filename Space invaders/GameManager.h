@@ -27,26 +27,28 @@ class GameManager
 
 		ALLEGRO_FONT* font = nullptr;
 		ALLEGRO_DISPLAY* display = nullptr;
+
 		ALLEGRO_EVENT_QUEUE* queue = nullptr;
 		ALLEGRO_EVENT_QUEUE* queue2 = nullptr;
+
 		ALLEGRO_KEYBOARD_STATE keyState;
 		ALLEGRO_MOUSE_STATE mouseState;
 		ALLEGRO_TIMER* timer = nullptr;
 		Barrier* barriere[3];
-		bool close = false; //to close the game
 		bool motion = true;
-		bool shoot = false; //to shooting
+		bool shoot = false; //per sparare
 		bool leggi = false;
 		bool enemyshoot = false; //gestisce lo shoot del nemico
-		Weapon* arma = nullptr;
-		Weapon* armanemico = nullptr;//gestita dopo
+		Weapon* arma = nullptr; //arma del giocatore
+		Weapon* armanemico = nullptr; //arma del nemico
 		
 		int numero;
-		int row_enemy; //row poi generata casuale
-		int column_enemy; //column poi generata casuale
-		bool easter[3] = { false }; //for the easter egg
-		bool enemies_initialize(Nemico*[][9], int, int);
+		int row_enemy; //riga poi generata casuale
+		int column_enemy; //colonna poi generata casuale
+		bool easter[3] = { false }; //per l'easter egg
+		bool enemies_initialize(Nemico*[][9], unsigned, unsigned);
 		void winScreen();
+		void pause();
 		
 
 	public:
@@ -55,7 +57,5 @@ class GameManager
 		
 		bool menu(bool&);
 		void level1();
-		
-		
 };
 #endif

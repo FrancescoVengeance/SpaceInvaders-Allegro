@@ -11,24 +11,26 @@ enum ENEMY_TYPE { SCARSO , MEDIO, FORTE, FORTISSIMO };
 class Nemico
 {
 protected:
-	bool draw = true; //variable for the drawing of the sprite
+	bool draw = true; //variabile per il disegno della sprite
 	int life = 0;
 	int strenght_attack = 0;
-	double speed = 0; //Enemy's speed
+	double speed = 0; //velocità del nemico
 	ALLEGRO_BITMAP* immagine = nullptr;
 	
 public:
 	Nemico(int _life, int _strenght, double _speed) : life(_life), strenght_attack(_strenght), speed(_speed) {}
 	virtual ~Nemico() {}
 
-	//coordinates
-	double x = 0;
-	double y = 20;
+	//coordinate
+	float x = 0;
+	float y = 20;
 
 	bool getDraw() const { return draw; }
 	void setDraw(bool d) { draw = d; }
+
 	int getEnemyLife() const { return life; }
 	void setEnemyLife(int l) { life = l; }
+
 	int getEnemyStrenght_attack() const { return strenght_attack; }
 	double getEnemySpeed() const { return speed; }
 	virtual ENEMY_TYPE getTipo() const = 0;

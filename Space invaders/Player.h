@@ -5,7 +5,7 @@
 #include <allegro5/allegro.h>
 using namespace std;
 
-enum DIRECTION {OTHER, LEFT, RIGHT}; //enum that return the right sprite based on the direction in the main
+enum DIRECTION {OTHER, LEFT, RIGHT}; //enum che restituisce la giusta immagine in base al tasto premuto
 
 class Player
 {
@@ -14,7 +14,8 @@ private:
 	float speed = 5.0;
 	float y = 1080-160;
 	int strenght = 5;
-	ALLEGRO_BITMAP* immagine[3] = { nullptr }; //array that contains sprites
+	unsigned score = 0;
+	ALLEGRO_BITMAP* immagine[3] = { nullptr }; //array che contiene le sprites
 
 public:
 	Player() 
@@ -41,19 +42,22 @@ public:
 	float getY() { return y; }
 	float x = 150;
 
+	void setScore(unsigned s) { score = s; }
+	unsigned getScore() const { return score; }
+
 	ALLEGRO_BITMAP* getPlayerImage(DIRECTION dir)
 	{
-		if (dir == LEFT) return immagine[1]; //if <- is pressed
-		if (dir == RIGHT) return immagine[2]; //if -> is pressed
-		return immagine[0]; //if no key is pressed
+		if (dir == LEFT) return immagine[1]; //se <- è premuto
+		if (dir == RIGHT) return immagine[2]; //se -> è premuto
+		return immagine[0]; //se nessun tasto è premuto
 	}
 
-	Player& operator ++() //prefix operator for increment of life
+	Player& operator ++() //operatore di pre-incremento per la vita
 	{
 		life++;
 		return *this;
 	}
-	Player& operator--() //prefix operator for decrement of life
+	Player& operator--() //operatore di pre-decremento per la vita
 	{
 		life--;
 		return *this;

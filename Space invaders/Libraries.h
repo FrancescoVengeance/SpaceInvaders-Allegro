@@ -1,4 +1,4 @@
-//header file that includes all .h used in the program
+//header che contiene tutti i .h utilizzati nel gioco
 
 #ifndef LIBRARIES_H
 #define LIBRARIES_H

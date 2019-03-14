@@ -13,7 +13,6 @@ int main(int argc, char **argv)
 	bool close = false;
 	bool start = true;
 
-	inizio:
 	while (!close)
 	{
 		close = game.menu(start);
