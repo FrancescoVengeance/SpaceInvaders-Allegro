@@ -106,114 +106,79 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], unsigned righe, unsign
 	return true;
 } 
 
-bool GameManager::menu(bool& start)
+bool GameManager::menu()
 {
 	
 	al_register_event_source(queue2, al_get_mouse_event_source());
-	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_get_keyboard_state(&keyState);
-	al_get_mouse_state(&mouseState);
-
-	ALLEGRO_EVENT mouseEvent;
 	al_wait_for_event(queue2, &mouseEvent);
+	//al_get_mouse_state(&mouseState);
 
-	/*Nemico* nemico[3];
-	nemico[0] = new Nemico1;
-	nemico[1] = new Nemico2;
-	nemico[2] = new Nemico3;*/
-	
-	//bool close = false;
-	/*for (unsigned i = 0; i < 3; i++)
-	{
-		nemico[i]->y = rand() % ALTEZZA;
-	}*/
 
-	while (true)
-	{
-		al_draw_bitmap(menuBackground, 0, 0, 1);
-		al_get_mouse_state(&mouseState);
-
-		/*for (unsigned i = 0; i < 3; i++)
-		{
-			if (nemico[i]->getDraw())
-			{
-				nemico[i]->x += nemico[i]->getEnemySpeed();
-				al_draw_bitmap(nemico[i]->getEnemyImage(), nemico[i]->x, nemico[i]->y, 1);
-			}
-		}*/
-
-		al_draw_bitmap(menuText, (LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2), 50, 0);
-
+	al_draw_bitmap(menuBackground, 0, 0, 1);
+	al_draw_bitmap(menuText, (LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2), 50, 0);
 		//start button
-		if (mouseState.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) &&
-			mouseState.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) + al_get_bitmap_width(startButtonPressed) &&
-			mouseState.y >= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 &&
-			mouseState.y <= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 + al_get_bitmap_height(startButtonPressed))
+	if (mouseEvent.mouse.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) &&
+		mouseEvent.mouse.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) + al_get_bitmap_width(startButtonPressed) &&
+		mouseEvent.mouse.y >= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 &&
+		mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 + al_get_bitmap_height(startButtonPressed))
 
+	{
+		al_draw_bitmap(startButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50, 0);
+		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
-			al_draw_bitmap(startButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50, 0);
-			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-			{
-				al_draw_bitmap(startButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressedLong) / 2) - 50, 0);
-			}
-			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) return true;
+			al_draw_bitmap(startButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressedLong) / 2) - 50, 0);
 		}
-		else
-		{
-			al_draw_bitmap(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2) - 50, 0);
-		}
-
-		//option button
-		if (mouseState.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2) &&
-			mouseState.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2) + al_get_bitmap_width(optionButtonPressed) &&
-			mouseState.y >= (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175 &&
-			mouseState.y <= (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175 + al_get_bitmap_height(optionButtonPressed))
-
-		{
-			al_draw_bitmap(optionButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175, 0);
-			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-			{
-				al_draw_bitmap(optionButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressedLong) / 2) +175, 0);
-			}
-		}
-		else
-		{
-			al_draw_bitmap(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175, 0);
-		}
-
-		//exit button
-		if (mouseState.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) &&
-			mouseState.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) + al_get_bitmap_width(escButton) &&
-			mouseState.y >= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 &&
-			mouseState.y <= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 + al_get_bitmap_height(escButton))
-
-		{
-				al_draw_bitmap(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
-				if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-					
-				{
-					al_draw_bitmap(escButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(escButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButtonPressedLong) / 2) + 400, 0);
-				}
-				if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
-				{
-					start = false;
-					return true;
-				}
-		}
-		else
-		{
-			al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
-		}
-
-		al_flip_display();
-		return false;
+		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) { level1(); return true; }
+	}
+	else
+	{
+		al_draw_bitmap(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2) - 50, 0);
 	}
 
-	//for (unsigned i = 0; i < 3; i++)
-	//{
-	//	delete nemico[i];
-	//}
+	//option button
+	if (mouseEvent.mouse.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2) &&
+		mouseEvent.mouse.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2) + al_get_bitmap_width(optionButtonPressed) &&
+		mouseEvent.mouse.y >= (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175 &&
+		mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175 + al_get_bitmap_height(optionButtonPressed))
+
+	{
+		al_draw_bitmap(optionButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175, 0);
+		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+		{
+			al_draw_bitmap(optionButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressedLong) / 2) + 175, 0);
+		}
+	}
+	else
+	{
+		al_draw_bitmap(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175, 0);
+	}
+
+	//exit button
+	if (mouseEvent.mouse.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) &&
+		mouseEvent.mouse.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) + al_get_bitmap_width(escButton) &&
+		mouseEvent.mouse.y >= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 &&
+		mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 + al_get_bitmap_height(escButton))
+
+	{
+		al_draw_bitmap(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+
+		{
+			al_draw_bitmap(escButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(escButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButtonPressedLong) / 2) + 400, 0);
+		}
+		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+		{
+			return true;
+		}
+	}
+	else
+	{
+		al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+	}
+
+	al_flip_display();
+	return false;
 }
 
 
@@ -297,7 +262,7 @@ void GameManager::level1()
 			stringstream strs;
 			strs << giocatore.getLife();
 			string temp_str = strs.str();
-			char* char_type = (char*)temp_str.c_str();
+			const char* char_type = temp_str.c_str();
 			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE, char_type);//stampa le vite
 
 			al_get_keyboard_state(&keyState);

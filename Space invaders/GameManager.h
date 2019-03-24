@@ -32,8 +32,9 @@ class GameManager
 		ALLEGRO_EVENT_QUEUE* queue2 = nullptr;
 
 		ALLEGRO_KEYBOARD_STATE keyState;
-		ALLEGRO_MOUSE_STATE mouseState;
+		//ALLEGRO_MOUSE_STATE mouseState;
 		ALLEGRO_TIMER* timer = nullptr;
+		ALLEGRO_EVENT mouseEvent;
 		Barrier* barriere[3];
 		bool motion = true;
 		bool shoot = false; //per sparare
@@ -49,13 +50,14 @@ class GameManager
 		bool enemies_initialize(Nemico*[][9], unsigned, unsigned);
 		void winScreen();
 		void pause();
+		void level1();
 		
 
 	public:
 		GameManager();
 		~GameManager();
 		
-		bool menu(bool&);
-		void level1();
+		bool menu();
+		
 };
 #endif
