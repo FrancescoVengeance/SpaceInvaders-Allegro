@@ -239,7 +239,7 @@ void GameManager::level1()
 			vite << giocatore.getLife();
 			string temp_str = vite.str();
 			const char* char_type = temp_str.c_str();
-			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE, char_type);//stampa le vite
+			al_draw_text(font, al_map_rgb(255, 0, 0), 60, ALTEZZA - 90, ALLEGRO_ALIGN_CENTRE, char_type);//stampa le vite
 
 			stringstream punteggio; //stampa del punteggio
 			punteggio << giocatore.getScore();
@@ -293,7 +293,7 @@ void GameManager::level1()
 					--giocatore;
 					playerShooted = false;
 				}
-				if (armanemico->y >= 1080 && armanemico != nullptr && playerShooted == false)
+				if (armanemico->y >= ALTEZZA && armanemico != nullptr && playerShooted == false)
 				{
 					delete armanemico;
 					armanemico = nullptr;
