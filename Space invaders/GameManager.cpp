@@ -111,7 +111,7 @@ bool GameManager::menu()
 	
 	al_register_event_source(queue2, al_get_mouse_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_wait_for_event(queue2, &mouseEvent);
+	
 	//al_get_mouse_state(&mouseState);
 
 
@@ -178,6 +178,7 @@ bool GameManager::menu()
 	}
 
 	al_flip_display();
+	al_wait_for_event(queue2, &mouseEvent);
 	return false;
 }
 
@@ -365,6 +366,7 @@ void GameManager::level1()
 			if (al_key_down(&keyState, ALLEGRO_KEY_A)) easter[1] = true;
 			if (al_key_down(&keyState, ALLEGRO_KEY_O)) easter[2] = true;
 
+			cout << "movimento nel livello " << motion << endl;
 			if (motion)
 			{
 				for (unsigned i = 0; i < righe; i++)
@@ -456,6 +458,8 @@ void GameManager::level1()
 			close = true;
 			winScreen();
 		}
+
+		//aggiungere il controllo sulla coda vuota
 	}
 
 
@@ -484,15 +488,14 @@ void GameManager::winScreen()
 
 void GameManager::pause()
 {
-	ALLEGRO_BITMAP* pause = al_load_bitmap("pauseBackground.png");
-	//al_register_event_source(queue, al_get_keyboard_event_source());
-	bool close = false;
-	while (!close)
+	ALLEGRO_BITMAP* pausa = al_load_bitmap("pauseBackground.png");
+	bool close2 = false;
+	while (!close2)
 	{
-		al_draw_bitmap(pause, 0, 0, 0);
-		al_flip_display();
 		al_get_keyboard_state(&keyState);
-		if(al_key_down(&keyState, ALLEGRO_KEY_A)) close = true;
+		al_draw_bitmap(pausa, 0, 0, 0);
+		if (al_key_down(&keyState, ALLEGRO_KEY_A)) close2 = true;
+		al_flip_display();
 	}
-	al_destroy_bitmap(pause);
+	al_destroy_bitmap(pausa);
 }
