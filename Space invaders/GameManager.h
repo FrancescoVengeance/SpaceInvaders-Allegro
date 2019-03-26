@@ -32,7 +32,6 @@ class GameManager
 		ALLEGRO_EVENT_QUEUE* queue2 = nullptr;
 
 		ALLEGRO_KEYBOARD_STATE keyState;
-		//ALLEGRO_MOUSE_STATE mouseState;
 		ALLEGRO_TIMER* timer = nullptr;
 		ALLEGRO_EVENT mouseEvent;
 

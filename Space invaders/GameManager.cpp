@@ -50,7 +50,6 @@ GameManager::GameManager()
 
 	font = al_load_ttf_font("alien.ttf", 72, 0);
 	cout << "game manager creato" << endl;
-	
 }
 
 GameManager::~GameManager()
@@ -108,16 +107,14 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], unsigned righe, unsign
 
 bool GameManager::menu()
 {
-	
+	al_pause_event_queue(queue2, false);
 	al_register_event_source(queue2, al_get_mouse_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-	
-	//al_get_mouse_state(&mouseState);
-
 
 	al_draw_bitmap(menuBackground, 0, 0, 1);
 	al_draw_bitmap(menuText, (LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2), 50, 0);
-		//start button
+
+	//start button
 	if (mouseEvent.mouse.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) &&
 		mouseEvent.mouse.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) + al_get_bitmap_width(startButtonPressed) &&
 		mouseEvent.mouse.y >= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 &&
@@ -185,6 +182,7 @@ bool GameManager::menu()
 
 void GameManager::level1()
 {
+	al_pause_event_queue(queue2, true);
 	//al_register_event_source(queue, al_get_keyboard_event_source());
 	//al_register_event_source(queue, al_get_mouse_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -373,7 +371,8 @@ void GameManager::level1()
 				{
 					for (unsigned j = 0; j < colonne; j++)
 					{
-						if (nemico[i][j] != nullptr) {
+						if (nemico[i][j] != nullptr) 
+						{
 							if (nemico[i][j]->getDraw())
 							{
 								nemico[i][j]->x += nemico[i][j]->getEnemySpeed();
@@ -449,6 +448,7 @@ void GameManager::level1()
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE))
 		{
+			al_pause_event_queue(queue, true);
 			pause();
 			al_rest(0.25);
 			al_pause_event_queue(queue, false);
@@ -493,16 +493,38 @@ void GameManager::winScreen()
 
 void GameManager::pause()
 {
-	al_pause_event_queue(queue, true);
 	ALLEGRO_BITMAP* pausa = al_load_bitmap("pauseBackground.png");
-	ALLEGRO_KEYBOARD_STATE keyToClosePauseMenu;
+	al_pause_event_queue(queue2, false);
 	bool close2 = false;
 	while (!close2)
 	{
-		al_get_keyboard_state(&keyToClosePauseMenu);
+		al_get_keyboard_state(&keyState);
+		//al_register_event_source(queue2, al_get_mouse_event_source());
 		al_draw_bitmap(pausa, 0, 0, 0);
+
+		if (mouseEvent.mouse.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) &&
+			mouseEvent.mouse.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) + al_get_bitmap_width(escButton) &&
+			mouseEvent.mouse.y >= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 &&
+			mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 + al_get_bitmap_height(escButton))
+
+		{
+			al_draw_bitmap(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+
+			{
+				al_draw_bitmap(escButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(escButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButtonPressedLong) / 2) + 400, 0);
+			}
+			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+			{
+				close2 = true;
+			}
+		}
+		else
+		{
+			al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+		}
+		al_wait_for_event(queue2,&mouseEvent);
 		al_flip_display();
-		if (al_key_down(&keyToClosePauseMenu, ALLEGRO_KEY_ESCAPE)) close2 = true;
 	}
 		
 	al_destroy_bitmap(pausa);
