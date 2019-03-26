@@ -35,7 +35,6 @@ class GameManager
 		//ALLEGRO_MOUSE_STATE mouseState;
 		ALLEGRO_TIMER* timer = nullptr;
 		ALLEGRO_EVENT mouseEvent;
-		Barrier* barriere[3];
 		bool motion = true;
 		bool shoot = false; //per sparare
 		bool leggi = false;

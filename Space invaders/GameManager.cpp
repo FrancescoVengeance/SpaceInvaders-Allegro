@@ -497,16 +497,14 @@ void GameManager::winScreen()
 void GameManager::pause()
 {
 	ALLEGRO_BITMAP* pause = al_load_bitmap("pauseBackground.png");
-	al_draw_bitmap(pause, 0, 0, 0);
-	al_flip_display();
 	//al_register_event_source(queue, al_get_keyboard_event_source());
 	bool close = false;
 	while (!close)
 	{
+		al_draw_bitmap(pause, 0, 0, 0);
+		al_flip_display();
 		al_get_keyboard_state(&keyState);
 		if(al_key_down(&keyState, ALLEGRO_KEY_A)) close = true;
 	}
 	al_destroy_bitmap(pause);
-
-	//return;
 }
