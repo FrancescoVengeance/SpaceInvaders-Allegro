@@ -14,11 +14,12 @@ protected:
 	bool draw = true; //variabile per il disegno della sprite
 	int life = 0;
 	int strenght_attack = 0;
+	ENEMY_TYPE tipo;
 	double speed = 0; //velocità del nemico
 	ALLEGRO_BITMAP* immagine = nullptr;
 	
 public:
-	Nemico(int _life, int _strenght, double _speed) : life(_life), strenght_attack(_strenght), speed(_speed) {}
+	Nemico(int _life, int _strenght, double _speed, ENEMY_TYPE _tipo) : life(_life), strenght_attack(_strenght), speed(_speed), tipo(_tipo) {}
 	virtual ~Nemico() {}
 
 	//coordinate
@@ -33,7 +34,7 @@ public:
 
 	int getEnemyStrenght_attack() const { return strenght_attack; }
 	double getEnemySpeed() const { return speed; }
-	virtual ENEMY_TYPE getTipo() const = 0;
+	ENEMY_TYPE getTipo() const { return tipo; }
 	ALLEGRO_BITMAP* getEnemyImage() const { return immagine; }
 };
 #endif

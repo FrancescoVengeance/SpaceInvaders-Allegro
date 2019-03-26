@@ -21,25 +21,22 @@
     <ClInclude Include="Weapon.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy3.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy2.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy1.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Barrier.h">
+    <ClInclude Include="GameManager.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
+    <ClInclude Include="Nemico.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Nemico1.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Nemico2.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Nemico3.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>

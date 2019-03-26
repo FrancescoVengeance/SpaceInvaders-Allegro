@@ -7,9 +7,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_native_dialog.h>
 #include "Weapon.h"
-#include "Enemy3.h"
+#include "Nemico3.h"
 #include "Player.h"
-#include "Barrier.h"
 #include "GameManager.h"
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>

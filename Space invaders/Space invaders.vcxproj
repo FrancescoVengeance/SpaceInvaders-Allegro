@@ -160,13 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Barrier.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Libraries.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Enemy3.h" />
-    <ClInclude Include="Enemy2.h" />
-    <ClInclude Include="Enemy1.h" />
+    <ClInclude Include="Nemico.h" />
+    <ClInclude Include="Nemico3.h" />
+    <ClInclude Include="Nemico2.h" />
+    <ClInclude Include="Nemico1.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
