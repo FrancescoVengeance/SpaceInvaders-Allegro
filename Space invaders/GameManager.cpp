@@ -259,9 +259,9 @@ void GameManager::level1()
 				close = true; //implementare la schermata di game over
 			}
 
-			stringstream strs;
-			strs << giocatore.getLife();
-			string temp_str = strs.str();
+			stringstream vite;
+			vite << giocatore.getLife();
+			string temp_str = vite.str();
 			const char* char_type = temp_str.c_str();
 			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE, char_type);//stampa le vite
 
@@ -489,7 +489,7 @@ void GameManager::winScreen()
 	strs << "YOU WIN";
 	string temp_str = strs.str();
 	char * char_type = (char *)temp_str.c_str();
-	al_draw_text(font, al_map_rgb(255, 0, 0), 200, 0, ALLEGRO_ALIGN_CENTRE, char_type);//life print test
+	al_draw_text(font, al_map_rgb(255, 0, 0), 200, 0, ALLEGRO_ALIGN_CENTRE, char_type);
 	al_flip_display();
 	al_rest(4);
 }
