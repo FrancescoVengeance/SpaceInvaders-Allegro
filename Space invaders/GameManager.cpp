@@ -231,24 +231,24 @@ void GameManager::level1()
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
 
-		/*if (easter[0] && easter[1] && easter[2]) //trigger the easter egg event
-		{
-			close = true;
-			easter_egg(display);
-		}*/
-
 		al_draw_bitmap(gameBackground, 0, 0, 0);
 
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
-			stringstream vite;
+			stringstream vite; //stampa delle vite
 			vite << giocatore.getLife();
 			string temp_str = vite.str();
 			const char* char_type = temp_str.c_str();
 			al_draw_text(font, al_map_rgb(255, 0, 0), 100, 0, ALLEGRO_ALIGN_CENTRE, char_type);//stampa le vite
 
+			stringstream punteggio; //stampa del punteggio
+			punteggio << giocatore.getScore();
+			string tempPunteggio = punteggio.str();
+			const char* punteggio2 = tempPunteggio.c_str();
+			al_draw_text(font, al_map_rgb(255, 0, 0),LARGHEZZA-120 , ALTEZZA-90, ALLEGRO_ALIGN_CENTRE, punteggio2);
+
 			al_get_keyboard_state(&keyState);
-			if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE)) close = true; //quando premo esc il gioco si chiude
+			if (al_key_down(&keyState, ALLEGRO_KEY_L)) close = true; //quando premo esc il gioco si chiude
 			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.x -= giocatore.getPlayerSpeed(); direction = LEFT; }
 			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) { giocatore.x += giocatore.getPlayerSpeed(); direction = RIGHT; }
 
@@ -430,7 +430,6 @@ void GameManager::level1()
 						motion = true;
 					}
 				}
-				//if (nemico[0][0]->x == 0 && nemico[0][0]->getDraw()) motion = true;
 			}
 
 			if (giocatore.x < 0) //in questo modo il giocatore non esce fuori dal display
@@ -438,16 +437,22 @@ void GameManager::level1()
 				al_draw_bitmap(giocatore.getPlayerImage(OTHER), 0, giocatore.getY(), 1);
 				giocatore.x = 0;
 			}
-			else if (giocatore.x > LARGHEZZA - 150)
+			else if (giocatore.x > LARGHEZZA - al_get_bitmap_width(giocatore.getPlayerImage(OTHER)))
 			{
 				al_draw_bitmap(giocatore.getPlayerImage(OTHER), LARGHEZZA - 150, giocatore.getY(), 1);
-				giocatore.x = LARGHEZZA - 150;
+				giocatore.x = LARGHEZZA - al_get_bitmap_width(giocatore.getPlayerImage(OTHER));
 			}
 			else al_draw_bitmap(giocatore.getPlayerImage(direction), giocatore.x, giocatore.getY(), 1);
 
 			al_flip_display();
 		}//fine event timer
-		if (al_key_down(&keyState, ALLEGRO_KEY_L)) pause();
+
+		if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE))
+		{
+			pause();
+			al_rest(0.25);
+			al_pause_event_queue(queue, false);
+		}
 
 		if (giocatore.getLife() == 0) //gestione vite
 		{
@@ -488,14 +493,17 @@ void GameManager::winScreen()
 
 void GameManager::pause()
 {
+	al_pause_event_queue(queue, true);
 	ALLEGRO_BITMAP* pausa = al_load_bitmap("pauseBackground.png");
+	ALLEGRO_KEYBOARD_STATE keyToClosePauseMenu;
 	bool close2 = false;
 	while (!close2)
 	{
-		al_get_keyboard_state(&keyState);
+		al_get_keyboard_state(&keyToClosePauseMenu);
 		al_draw_bitmap(pausa, 0, 0, 0);
-		if (al_key_down(&keyState, ALLEGRO_KEY_A)) close2 = true;
 		al_flip_display();
+		if (al_key_down(&keyToClosePauseMenu, ALLEGRO_KEY_ESCAPE)) close2 = true;
 	}
+		
 	al_destroy_bitmap(pausa);
 }
