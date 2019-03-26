@@ -35,18 +35,21 @@ class GameManager
 		//ALLEGRO_MOUSE_STATE mouseState;
 		ALLEGRO_TIMER* timer = nullptr;
 		ALLEGRO_EVENT mouseEvent;
+
 		bool motion = true;
 		bool shoot = false; //per sparare
 		bool leggi = false;
 		bool enemyshoot = false; //gestisce lo shoot del nemico
+		bool easter[3] = { false }; //per l'easter egg
+		bool enemies_initialize(Nemico*[][9], unsigned, unsigned);
+
 		Weapon* arma = nullptr; //arma del giocatore
 		Weapon* armanemico = nullptr; //arma del nemico
 		
 		int numero;
 		int row_enemy; //riga poi generata casuale
 		int column_enemy; //colonna poi generata casuale
-		bool easter[3] = { false }; //per l'easter egg
-		bool enemies_initialize(Nemico*[][9], unsigned, unsigned);
+		
 		void winScreen();
 		void pause();
 		void level1();

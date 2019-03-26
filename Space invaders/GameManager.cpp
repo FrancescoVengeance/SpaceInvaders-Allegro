@@ -190,7 +190,7 @@ void GameManager::level1()
 	al_start_timer(timer);
 	Player giocatore;
 
-	//gestione traslate nemico
+	//gestione translate nemico
 	int xToStart = 200;
 	int yToStart = 400;
 	//fine gestione translate
@@ -226,7 +226,7 @@ void GameManager::level1()
 	bool close = false; //per chiudere il gioco
 	while (!close)
 	{
-		DIRECTION direction = OTHER; //direzione che viene passata a getPlayerImage() per restiruisce la giusta animazione
+		DIRECTION direction = OTHER; //direzione che viene passata a getPlayerImage() per restituire la giusta animazione
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
 
@@ -236,29 +236,10 @@ void GameManager::level1()
 			easter_egg(display);
 		}*/
 
-		//gestione menu e scelta livelli
-		//	l1	->	normal
-		//	l2	->	advanced (con barriere)
-		//	l3	->	time
-
-
-		//->gestione mouse
-		/*if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && evento.mouse.button == 1) {
-			if (evento.mouse.x >= 821 && evento.mouse.x <= 1098 && evento.mouse.y >= 526 && evento.mouse.y <= 724) {
-				cout << "clicked" << endl;
-				choose = true;
-			}
-		}*/
-
 		al_draw_bitmap(gameBackground, 0, 0, 0);
 
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
-			if (giocatore.getLife() == 0) //gestione vite
-			{
-				close = true; //implementare la schermata di game over
-			}
-
 			stringstream vite;
 			vite << giocatore.getLife();
 			string temp_str = vite.str();
@@ -279,7 +260,7 @@ void GameManager::level1()
 				{
 					if (row_enemy == righe - 1) //se controllo l'ultima riga
 					{ 
-						armanemico = new Weapon;
+						armanemico = new Weapon();
 						armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
 						armanemico->y = nemico[row_enemy][column_enemy]->y;
 						enemyshoot = true;
@@ -288,7 +269,7 @@ void GameManager::level1()
 					{
 						if (nemico[row_enemy + 1][column_enemy]->getDraw() == false) //se sotto quel nemico non c'è nessuno, spara
 						{ 
-							armanemico = new Weapon;
+							armanemico = new Weapon();
 							armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
 							armanemico->y = nemico[row_enemy][column_enemy]->y;
 							enemyshoot = true;
@@ -296,33 +277,26 @@ void GameManager::level1()
 					}
 				}
 			}
-
-			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) //spara premendo space
+			if (armanemico != nullptr && enemyshoot) //sparo del nemico verso il giocatore
 			{
-				shoot = true;
-				arma = new Weapon;
-				arma->x = giocatore.x + 72;
-				arma->y = giocatore.getY();
-			}
-			if (armanemico != nullptr && enemyshoot == true) //sparo del nemico verso il giocatore
-			{ 
 				bool playerShooted = false;
 				armanemico->y += armanemico->getSpeed();
 				al_draw_bitmap(armanemico->getWeaponImage(), armanemico->x, armanemico->y, 1);
-				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y == giocatore.getY() + (float)150.00) 
+				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y == giocatore.getY() + (float)150.00)
 				{
 					//giocaore colpito
 					playerShooted = true;
 				}
-				if (playerShooted == true) --giocatore; //nemico colpito
-				if (armanemico->y >= 1080 && armanemico != nullptr && playerShooted == false) 
-				{ 
-					delete armanemico; 
-					armanemico = nullptr; 
+				if (playerShooted == true)//giocatore colpito
+				{
+					--giocatore;
+					playerShooted = false;
 				}
-				//gestire qui collisioni con barriera con un if(advancedMode)
-
-
+				if (armanemico->y >= 1080 && armanemico != nullptr && playerShooted == false)
+				{
+					delete armanemico;
+					armanemico = nullptr;
+				}
 			}
 			if (armanemico == nullptr) //gestione random shoot nemico 
 			{
@@ -332,6 +306,13 @@ void GameManager::level1()
 			}
 			//fine gestione arma nemici
 
+			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && !shoot) //spara premendo space
+			{
+				shoot = true;
+				arma = new Weapon();
+				arma->x = giocatore.x + 72;
+				arma->y = giocatore.getY();
+			}
 			if (shoot) //sparo del giocatore
 			{
 				arma->y -= arma->getSpeed();
@@ -347,7 +328,7 @@ void GameManager::level1()
 					int vy;
 					for (int j = 0; j < colonne; j++) 
 					{
-						if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + 100 && arma->y <= nemico[i][j]->y + 100 && nemico[i][j]->getDraw() == true) 
+						if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + 100 && arma->y <= nemico[i][j]->y + 100 && nemico[i][j]->getDraw()) 
 						{
 							allEnemiesKilled++;
 							shooted = true;
@@ -365,13 +346,13 @@ void GameManager::level1()
 								
 						nemico[vx][vy]->setDraw(false); 
 						giocatore.setScore(score);
-						cout << giocatore.getScore();
+						cout << giocatore.getScore() << endl;
 						shoot = false;  
 						break;
 					}
 				}
 				//**FINE CONTROLLI COLLISIONI***//
-				//cout <<"Y "<< arma->y << endl;
+
 				if ((arma->y <= 0) && arma != nullptr) //quando il limite dello schermo è raggiunto elimina l'arma del giocatore
 				{
 					shoot = false;
@@ -432,22 +413,25 @@ void GameManager::level1()
 				}
 				//controlla il movimento dei nemici verso sinistra
 				int xToControl = -1;
-				for (int j = 0; j < colonne; j++) {
-					if (nemico[0][j]->getDraw()) {
+				for (int j = 0; j < colonne; j++) 
+				{
+					if (nemico[0][j]->getDraw()) 
+					{
 						xToControl = j;
 						break;
 					}
 				}
 				if (xToControl != -1 && nemico[0][xToControl]->getDraw()) //quando il limite dello schermo è raggiunto i nemici cambiano direzione
 				{
-					if (nemico[0][xToControl]->x == 0) {
+					if (nemico[0][xToControl]->x == 0) 
+					{
 						motion = true;
 					}
 				}
 				//if (nemico[0][0]->x == 0 && nemico[0][0]->getDraw()) motion = true;
 			}
 
-			if (giocatore.x < 0)
+			if (giocatore.x < 0) //in questo modo il giocatore non esce fuori dal display
 			{
 				al_draw_bitmap(giocatore.getPlayerImage(OTHER), 0, giocatore.getY(), 1);
 				giocatore.x = 0;
@@ -460,14 +444,18 @@ void GameManager::level1()
 			else al_draw_bitmap(giocatore.getPlayerImage(direction), giocatore.x, giocatore.getY(), 1);
 
 			al_flip_display();
-			//allEnemiesKilled = 45;
-			if (allEnemiesKilled == 45)
-			{
-				close = true;
-				winScreen();
-			}
 		}//fine event timer
 		if (al_key_down(&keyState, ALLEGRO_KEY_L)) pause();
+
+		if (giocatore.getLife() == 0) //gestione vite
+		{
+			close = true; //implementare la schermata di game over
+		}
+		if (allEnemiesKilled == 45)
+		{
+			close = true;
+			winScreen();
+		}
 	}
 
 
