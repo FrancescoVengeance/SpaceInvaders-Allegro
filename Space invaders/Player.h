@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include <allegro5/allegro.h>
+#include "Nemico3.h"
 using namespace std;
 
 enum DIRECTION {OTHER, LEFT, RIGHT}; //enum che restituisce la giusta immagine in base al tasto premuto
@@ -61,6 +62,16 @@ public:
 	{
 		life--;
 		return *this;
+	}
+
+	void gestionePunteggio(Nemico* n, bool& shoot)
+	{
+		if (n->getTipo() == SCARSO) score += 100;
+		if (n->getTipo() == MEDIO) score += 200;
+		if (n->getTipo() == FORTE) score += 300;
+
+		n->setDraw(false);
+		shoot = false;
 	}
 };
 

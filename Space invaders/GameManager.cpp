@@ -177,7 +177,6 @@ bool GameManager::menu()
 	return false;
 }
 
-
 void GameManager::level1()
 {
 	al_pause_event_queue(queue2, true);
@@ -334,17 +333,11 @@ void GameManager::level1()
 							break;
 						}
 					}
-					if (shooted == true) 
-					{ 
-						unsigned score = giocatore.getScore(); //gestione del punteggio
-						if (nemico[vx][vy]->getTipo() == SCARSO) score += 100;
-						if (nemico[vx][vy]->getTipo() == MEDIO) score += 200;
-						if (nemico[vx][vy]->getTipo() == FORTE) score += 300;
-								
-						nemico[vx][vy]->setDraw(false); 
-						giocatore.setScore(score);
-						cout << giocatore.getScore() << endl;
-						shoot = false;  
+
+					if (shooted)
+					{
+						giocatore.gestionePunteggio(nemico[vx][vy], shoot);
+						//giocatore.setScore(gestionePunteggio( giocatore.getScore()));
 						break;
 					}
 				}
@@ -481,7 +474,6 @@ void GameManager::level1()
 void GameManager::winScreen()
 {
 	al_clear_to_color(al_map_rgb(0, 2, 45));
-	//al_draw_bitmap(al_load_bitmap("rullo.jpg"), 300, 300, 0);
 	stringstream strs;
 	strs << "YOU WIN";
 	string temp_str = strs.str();
@@ -506,7 +498,6 @@ void GameManager::pause()
 			mouseEvent.mouse.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) + al_get_bitmap_width(escButton) &&
 			mouseEvent.mouse.y >= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 &&
 			mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 + al_get_bitmap_height(escButton))
-
 		{
 			MotoreGrafico::draw(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400);
 			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
