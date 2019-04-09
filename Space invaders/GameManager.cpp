@@ -110,9 +110,8 @@ bool GameManager::menu()
 	al_pause_event_queue(queue2, false);
 	al_register_event_source(queue2, al_get_mouse_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
-	al_draw_bitmap(menuBackground, 0, 0, 1);
-	al_draw_bitmap(menuText, (LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2), 50, 0);
+	MotoreGrafico::draw(menuBackground, 0, 0);
+	MotoreGrafico::draw(menuText, (LARGHEZZA / 2) - (al_get_bitmap_width(menuText) / 2), 50);
 
 	//start button
 	if (mouseEvent.mouse.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2) &&
@@ -121,16 +120,17 @@ bool GameManager::menu()
 		mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50 + al_get_bitmap_height(startButtonPressed))
 
 	{
-		al_draw_bitmap(startButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50, 0);
+		MotoreGrafico::draw(startButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50);
+		
 		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
-			al_draw_bitmap(startButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressedLong) / 2) - 50, 0);
+			MotoreGrafico::draw(startButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressedLong) / 2) - 50);
 		}
 		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) { level1(); return true; }
 	}
 	else
 	{
-		al_draw_bitmap(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2) - 50, 0);
+		MotoreGrafico::draw(startButton, (LARGHEZZA / 2) - (al_get_bitmap_width(startButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButton) / 2) - 50);
 	}
 
 	//option button
@@ -140,15 +140,15 @@ bool GameManager::menu()
 		mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175 + al_get_bitmap_height(optionButtonPressed))
 
 	{
-		al_draw_bitmap(optionButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175, 0);
+		MotoreGrafico::draw(optionButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressed) / 2) + 175);
 		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
-			al_draw_bitmap(optionButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressedLong) / 2) + 175, 0);
+			MotoreGrafico::draw(optionButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButtonPressedLong) / 2) + 175);
 		}
 	}
 	else
 	{
-		al_draw_bitmap(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175, 0);
+		MotoreGrafico::draw(optionButton, (LARGHEZZA / 2) - (al_get_bitmap_width(optionButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(optionButton) / 2) + 175);
 	}
 
 	//exit button
@@ -158,11 +158,10 @@ bool GameManager::menu()
 		mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 + al_get_bitmap_height(escButton))
 
 	{
-		al_draw_bitmap(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+		MotoreGrafico::draw(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400);
 		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-
 		{
-			al_draw_bitmap(escButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(escButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButtonPressedLong) / 2) + 400, 0);
+			MotoreGrafico::draw(escButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(escButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButtonPressedLong) / 2) + 400);
 		}
 		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
@@ -171,10 +170,9 @@ bool GameManager::menu()
 	}
 	else
 	{
-		al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+		MotoreGrafico::draw(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400);
 	}
-
-	al_flip_display();
+	MotoreGrafico::refreshDisplay();
 	al_wait_for_event(queue2, &mouseEvent);
 	return false;
 }
@@ -229,7 +227,7 @@ void GameManager::level1()
 		ALLEGRO_EVENT evento;
 		al_wait_for_event(queue, &evento);
 
-		al_draw_bitmap(gameBackground, 0, 0, 0);
+		MotoreGrafico::draw(gameBackground, 0, 0);
 
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
@@ -376,7 +374,7 @@ void GameManager::level1()
 							if (nemico[i][j]->getDraw())
 							{
 								nemico[i][j]->x += nemico[i][j]->getEnemySpeed();
-								al_draw_bitmap(nemico[i][j]->getEnemyImage(), nemico[i][j]->x, nemico[i][j]->y, 1);
+								MotoreGrafico::draw(*nemico[i][j]);
 							}
 						}
 					}
@@ -408,7 +406,7 @@ void GameManager::level1()
 						if (nemico[i][j]->getDraw())
 						{
 							nemico[i][j]->x -= nemico[i][j]->getEnemySpeed();
-							al_draw_bitmap(nemico[i][j]->getEnemyImage(), nemico[i][j]->x, nemico[i][j]->y, 1);
+							MotoreGrafico::draw(*nemico[i][j]);
 						}
 					}
 				}
@@ -433,17 +431,19 @@ void GameManager::level1()
 
 			if (giocatore.x < 0) //in questo modo il giocatore non esce fuori dal display
 			{
-				al_draw_bitmap(giocatore.getPlayerImage(OTHER), 0, giocatore.getY(), 1);
+				MotoreGrafico::draw(giocatore, OTHER);
+				//al_draw_bitmap(giocatore.getPlayerImage(OTHER), 0, giocatore.getY(), 1);
 				giocatore.x = 0;
 			}
 			else if (giocatore.x > LARGHEZZA - al_get_bitmap_width(giocatore.getPlayerImage(OTHER)))
 			{
-				al_draw_bitmap(giocatore.getPlayerImage(OTHER), LARGHEZZA - 150, giocatore.getY(), 1);
+				MotoreGrafico::draw(giocatore, OTHER);
+				//al_draw_bitmap(giocatore.getPlayerImage(OTHER), LARGHEZZA - 150, giocatore.getY(), 1);
 				giocatore.x = LARGHEZZA - al_get_bitmap_width(giocatore.getPlayerImage(OTHER));
 			}
-			else al_draw_bitmap(giocatore.getPlayerImage(direction), giocatore.x, giocatore.getY(), 1);
+			else MotoreGrafico::draw(giocatore, direction);
 
-			al_flip_display();
+			MotoreGrafico::refreshDisplay();
 		}//fine event timer
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE))
@@ -487,7 +487,7 @@ void GameManager::winScreen()
 	string temp_str = strs.str();
 	char * char_type = (char *)temp_str.c_str();
 	al_draw_text(font, al_map_rgb(255, 0, 0), 200, 0, ALLEGRO_ALIGN_CENTRE, char_type);
-	al_flip_display();
+	MotoreGrafico::refreshDisplay();
 	al_rest(4);
 }
 
@@ -500,7 +500,7 @@ void GameManager::pause()
 	{
 		al_get_keyboard_state(&keyState);
 		//al_register_event_source(queue2, al_get_mouse_event_source());
-		al_draw_bitmap(pausa, 0, 0, 0);
+		MotoreGrafico::draw(pausa, 0, 0);
 
 		if (mouseEvent.mouse.x >= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) &&
 			mouseEvent.mouse.x <= (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2) + al_get_bitmap_width(escButton) &&
@@ -508,11 +508,10 @@ void GameManager::pause()
 			mouseEvent.mouse.y <= (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400 + al_get_bitmap_height(escButton))
 
 		{
-			al_draw_bitmap(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+			MotoreGrafico::draw(escButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400);
 			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-
 			{
-				al_draw_bitmap(escButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(escButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButtonPressedLong) / 2) + 400, 0);
+				MotoreGrafico::draw(escButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(escButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButtonPressedLong) / 2) + 400);
 			}
 			if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 			{
@@ -521,10 +520,10 @@ void GameManager::pause()
 		}
 		else
 		{
-			al_draw_bitmap(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400, 0);
+			MotoreGrafico::draw(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400);
 		}
 		al_wait_for_event(queue2,&mouseEvent);
-		al_flip_display();
+		MotoreGrafico::refreshDisplay();
 	}
 		
 	al_destroy_bitmap(pausa);

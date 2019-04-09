@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Libraries.h" />
+    <ClInclude Include="MotoreGrafico.h" />
     <ClInclude Include="Nemico.h" />
     <ClInclude Include="Nemico3.h" />
     <ClInclude Include="Nemico2.h" />
