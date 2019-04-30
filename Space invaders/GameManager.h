@@ -42,6 +42,8 @@ class GameManager
 		bool easter[3] = { false }; //per l'easter egg
 		bool enemies_initialize(Nemico*[][9], unsigned, unsigned);
 		int gestionePunteggio(Nemico*,bool&,unsigned);
+		bool aggiornaCoordinate(Nemico*[][9], unsigned, unsigned, float, bool&);
+
 
 		Weapon* arma = nullptr; //arma del giocatore
 		Weapon* armanemico = nullptr; //arma del nemico

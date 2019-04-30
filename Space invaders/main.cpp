@@ -1,5 +1,4 @@
 #include "GameManager.h"
-
 //note
 /*
 power up
@@ -16,6 +15,10 @@ int main(int argc, char **argv)
 	{
 		close = game.menu();
 	}
+
+	//cout << (fine - start).count() << endl;
+
+
 
 	return 0;
 }

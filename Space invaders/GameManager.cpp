@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include <chrono>
 #define FPS 120 
 #define ALTEZZA 1080 //height
 #define LARGHEZZA 1920 //width
@@ -180,8 +181,6 @@ bool GameManager::menu()
 void GameManager::level1()
 {
 	al_pause_event_queue(queue2, true);
-	//al_register_event_source(queue, al_get_keyboard_event_source());
-	//al_register_event_source(queue, al_get_mouse_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_start_timer(timer);
 	Player giocatore;
@@ -218,8 +217,10 @@ void GameManager::level1()
 	srand(time(NULL));
 
 	short unsigned allEnemiesKilled = 0;
-	
+	auto tempoInizio = chrono::steady_clock::now(); //serve pre spostare i nemici in basso
+	al_rest(0.05);
 	bool close = false; //per chiudere il gioco
+	bool aggiornaNemici = false;
 	while (!close)
 	{
 		DIRECTION direction = OTHER; //direzione che viene passata a getPlayerImage() per restituire la giusta animazione
@@ -355,7 +356,6 @@ void GameManager::level1()
 			if (al_key_down(&keyState, ALLEGRO_KEY_A)) easter[1] = true;
 			if (al_key_down(&keyState, ALLEGRO_KEY_O)) easter[2] = true;
 
-			cout << "movimento nel livello " << motion << endl;
 			if (motion)
 			{
 				for (unsigned i = 0; i < righe; i++)
@@ -457,10 +457,23 @@ void GameManager::level1()
 			winScreen();
 		}
 
-		//aggiungere il controllo sulla coda vuota
+		auto tempoFine = chrono::steady_clock::now();
+		//cout << "tempo " << chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() << endl;
+		if (chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() % 4 == 0 && 
+			chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() > 0 && !aggiornaNemici)
+		{
+			cout << aggiornaCoordinate(nemico, righe, colonne,giocatore.getY(),close);
+			aggiornaNemici = true;
+			//cout << "tempo "<< chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count()<< endl;
+		}
+		else 
+		{
+			aggiornaNemici = false;
+		}
+
+		
 	}
-
-
+	
 	//dealloca i nemici
 	for (unsigned i = 0; i < righe; i++)
 	{
@@ -518,4 +531,28 @@ void GameManager::pause()
 	}
 		
 	al_destroy_bitmap(pausa);
+}
+
+bool GameManager::aggiornaCoordinate(Nemico* nemico[][9], unsigned righe, unsigned colonne, float playerY, bool& close)
+{
+	for (unsigned i = 0; i < righe; i++)
+	{
+		for (unsigned j = 0; j < colonne; j++)
+		{
+			nemico[i][j]->y += 2;
+		}
+	}
+
+	for (unsigned i = 0; i < righe; i++)
+	{
+		for (unsigned j = 0; j < colonne; j++)
+		{
+			if (playerY <= nemico[i][j]->y + al_get_bitmap_height(nemico[i][j]->getEnemyImage()) && nemico[i][j]->getDraw())
+			{
+				close = true;
+			}
+		}
+	}
+
+	return true;
 }
