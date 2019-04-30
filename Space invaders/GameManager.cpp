@@ -338,7 +338,6 @@ void GameManager::level1()
 					if (shooted)
 					{
 						giocatore.gestionePunteggio(nemico[vx][vy], shoot);
-						//giocatore.setScore(gestionePunteggio( giocatore.getScore()));
 						break;
 					}
 				}
@@ -384,10 +383,7 @@ void GameManager::level1()
 				}
 				if (yToControl != -1 && nemico[0][yToControl]->getDraw()) //quando il limite dello schermo è raggiunto i nemici cambiano direzione
 				{
-					if (nemico[0][yToControl]->x >= (float)(LARGHEZZA - 100)) 
-					{
-						motion = false;
-					}
+					if (nemico[0][yToControl]->x >= (float)(LARGHEZZA - 100)) motion = false;
 				}
 			}
 			else
@@ -415,10 +411,7 @@ void GameManager::level1()
 				}
 				if (xToControl != -1 && nemico[0][xToControl]->getDraw()) //quando il limite dello schermo è raggiunto i nemici cambiano direzione
 				{
-					if (nemico[0][xToControl]->x == 0) 
-					{
-						motion = true;
-					}
+					if (nemico[0][xToControl]->x == 0) motion = true;
 				}
 			}
 
@@ -447,31 +440,21 @@ void GameManager::level1()
 			al_pause_event_queue(queue, false);
 		}
 
-		if (giocatore.getLife() == 0) //gestione vite
-		{
-			close = true; //implementare la schermata di game over
-		}
+		if (giocatore.getLife() == 0) close = true; //implementare la schermata di game over
 		if (allEnemiesKilled == 45)
 		{
 			close = true;
 			winScreen();
 		}
 
-		auto tempoFine = chrono::steady_clock::now();
-		//cout << "tempo " << chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() << endl;
+		auto tempoFine = chrono::steady_clock::now(); //tempo trascorso dall'inizio del livello
 		if (chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() % 4 == 0 && 
 			chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() > 0 && !aggiornaNemici)
 		{
 			cout << aggiornaCoordinate(nemico, righe, colonne,giocatore.getY(),close);
 			aggiornaNemici = true;
-			//cout << "tempo "<< chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count()<< endl;
 		}
-		else 
-		{
-			aggiornaNemici = false;
-		}
-
-		
+		else aggiornaNemici = false;
 	}
 	
 	//dealloca i nemici
