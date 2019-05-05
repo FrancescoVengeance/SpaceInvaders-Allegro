@@ -27,6 +27,11 @@ public:
 		if (bunker.getDraw()) al_draw_bitmap(bunker.getImage(), bunker.getX(), bunker.getY(), 0);
 	}
 
+	static void draw(Weapon* arma)
+	{
+		al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 0);
+	}
+
 	static void refreshDisplay() { al_flip_display(); }
 };
 #endif // !MOTORE_GRAFICO_H

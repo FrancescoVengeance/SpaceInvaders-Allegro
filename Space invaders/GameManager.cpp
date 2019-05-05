@@ -330,7 +330,6 @@ void GameManager::level1()
 							break;
 						}
 					}
-
 					if (shooted)
 					{
 						giocatore.gestionePunteggio(nemico[vx][vy], shoot);
@@ -554,14 +553,15 @@ void GameManager::level2()
 			}
 			if (armanemico != nullptr && enemyshoot) //sparo del nemico verso il giocatore
 			{
+				bool playerShooted = false;
 				armanemico->y += armanemico->getSpeed();
 				al_draw_bitmap(armanemico->getWeaponImage(), armanemico->x, armanemico->y, 1);
-				if (armanemico->x >= giocatore.x && armanemico->x <= giocatore.x + 150 && armanemico->y == giocatore.getY() + (float)150.00)
+				if (giocatore.shooted(armanemico))
 				{
 					//giocaore colpito
+					--giocatore;
 					delete armanemico;
 					armanemico = nullptr;
-					--giocatore;
 				}
 				if (armanemico != nullptr &&  armanemico->y >= ALTEZZA)
 				{
@@ -569,6 +569,10 @@ void GameManager::level2()
 					armanemico = nullptr;
 					enemyshoot = false;
 				}
+			}
+			if (armanemico == nullptr) //gestione random shoot nemico 
+			{ 
+				enemyshoot = false;
 			}
 			//fine gestione arma nemici
 
@@ -582,8 +586,8 @@ void GameManager::level2()
 			//cout << "bunker " << bunker << endl;
 			if (shoot) //sparo del giocatore
 			{
-				arma->y -= arma->getSpeed();
-				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1); 
+				arma->y -= arma->getSpeed(); 
+				MotoreGrafico::draw(arma);
 				//**DA CONTROLLARE**//
 
 				//collisioni
@@ -687,13 +691,11 @@ void GameManager::level2()
 			if (giocatore.x < 0) //in questo modo il giocatore non esce fuori dal display
 			{
 				MotoreGrafico::draw(giocatore, OTHER);
-				//al_draw_bitmap(giocatore.getPlayerImage(OTHER), 0, giocatore.getY(), 1);
 				giocatore.x = 0;
 			}
 			else if (giocatore.x > LARGHEZZA - al_get_bitmap_width(giocatore.getPlayerImage(OTHER)))
 			{
 				MotoreGrafico::draw(giocatore, OTHER);
-				//al_draw_bitmap(giocatore.getPlayerImage(OTHER), LARGHEZZA - 150, giocatore.getY(), 1);
 				giocatore.x = LARGHEZZA - al_get_bitmap_width(giocatore.getPlayerImage(OTHER));
 			}
 			else MotoreGrafico::draw(giocatore, direction);

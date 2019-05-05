@@ -72,6 +72,15 @@ public:
 		n->setDraw(false);
 		shoot = false;
 	}
+
+	bool shooted(Weapon* arma)
+	{
+		if (arma->y == y && arma->x >= x && arma->x <= x + al_get_bitmap_width(immagine[0]))
+		{
+			return true;
+		}
+		return false;
+	}
 };
 
 #endif
