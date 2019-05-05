@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bunker.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Libraries.h" />
     <ClInclude Include="MotoreGrafico.h" />

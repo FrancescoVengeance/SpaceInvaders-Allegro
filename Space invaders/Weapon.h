@@ -12,7 +12,7 @@ protected:
 	int strenght = 5;
 	ALLEGRO_BITMAP* immagine = nullptr;
 public:
-	Weapon() { immagine = al_load_bitmap("Weapon.png"); cout << "ARMA COSTRUITA" << endl; }
+	Weapon() { immagine = al_load_bitmap("Weapon.png"); }
 	Weapon(const Weapon& w) //costruttore per copia
 	{
 		speed = w.speed;
@@ -21,7 +21,7 @@ public:
 		y = w.y;
 		immagine = al_load_bitmap("Weapon.png");
 	}
-	~Weapon() { al_destroy_bitmap(immagine); cout << "ARMA DISTRUTTA" << endl; }
+	~Weapon() { al_destroy_bitmap(immagine); }
 	
 	ALLEGRO_BITMAP* getWeaponImage() const { return immagine; }
 	int getStrenght() const { return strenght; }

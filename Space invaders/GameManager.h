@@ -41,7 +41,7 @@ class GameManager
 		bool enemyshoot = false; //gestisce lo shoot del nemico
 		bool easter[3] = { false }; //per l'easter egg
 		bool enemies_initialize(Nemico*[][9], unsigned, unsigned);
-		int gestionePunteggio(Nemico*,bool&,unsigned);
+		//int gestionePunteggio(Nemico*,bool&,unsigned);
 		bool aggiornaCoordinate(Nemico*[][9], unsigned, unsigned, float, bool&);
 
 
@@ -55,6 +55,8 @@ class GameManager
 		void winScreen();
 		void pause();
 		void level1();
+		void level2();
+		bool bunkerColpito(Weapon*, Bunker&, Bunker&, Bunker&);
 		
 
 	public:

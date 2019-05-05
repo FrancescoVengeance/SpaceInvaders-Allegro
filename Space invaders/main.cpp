@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
 	GameManager game;
 	bool close = false;
-	
+
 	while (!close)
 	{
 		close = game.menu();

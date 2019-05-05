@@ -19,7 +19,7 @@ protected:
 	ALLEGRO_BITMAP* immagine = nullptr;
 	
 public:
-	Nemico(int _life, int _strenght, double _speed, ENEMY_TYPE _tipo) : life(_life), strenght_attack(_strenght), speed(_speed), tipo(_tipo) {}
+	Nemico(int life, int strenght, double speed, ENEMY_TYPE tipo) : life(life), strenght_attack(strenght), speed(speed), tipo(tipo) {}
 	virtual ~Nemico() {}
 
 	//coordinate

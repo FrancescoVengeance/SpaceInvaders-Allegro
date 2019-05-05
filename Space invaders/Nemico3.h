@@ -10,7 +10,7 @@ public:
 	{
 		immagine = al_load_bitmap("Enemy3.png");
 	}
-	~Nemico3() override { al_destroy_bitmap(immagine); cout << "distrutto Nemico3" << endl; }
+	~Nemico3() override { al_destroy_bitmap(immagine); }
 };
 
 #endif // !NEMICO_FORTE_H

@@ -11,7 +11,7 @@ public:
 	{
 		immagine = al_load_bitmap("Enemy2.png");
 	}
-	~Nemico2() override { al_destroy_bitmap(immagine); cout << "distrutto Nemico2" << endl; }
+	~Nemico2() override { al_destroy_bitmap(immagine); }
 };
 #endif // ! NEMICO_MEDIO_H
 
