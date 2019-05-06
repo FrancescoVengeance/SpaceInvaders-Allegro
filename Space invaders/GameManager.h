@@ -56,8 +56,6 @@ class GameManager
 		void pause();
 		void level1();
 		void level2();
-		bool bunkerColpito(Weapon*, Bunker&, Bunker&, Bunker&);
-		
 
 	public:
 		GameManager();

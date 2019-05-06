@@ -84,7 +84,7 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], unsigned righe, unsign
 		nemico[0][j]->x = nemico[0][j - 1]->x + al_get_bitmap_width(nemico[0][j]->getEnemyImage()) + 70;
 	}
 
-	for (unsigned i = 1; i < righe; i++)
+	for (unsigned i = 0; i < righe; i++)
 	{
 		for (unsigned j = 0; j < colonne; j++)
 		{
@@ -309,7 +309,8 @@ void GameManager::level1()
 			if (shoot) //sparo del giocatore
 			{
 				arma->y -= arma->getSpeed();
-				al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
+				MotoreGrafico::draw(arma);
+				//al_draw_bitmap(arma->getWeaponImage(), arma->x, arma->y, 1);
 
 				//**DA CONTROLLARE**//
 
@@ -461,7 +462,7 @@ void GameManager::level1()
 		}
 	}
 
-	if (close) level2();
+	if (close && giocatore.getLife() > 0) level2();
 }
 
 void GameManager::level2()
