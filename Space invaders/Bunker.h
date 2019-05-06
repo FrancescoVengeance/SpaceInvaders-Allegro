@@ -55,7 +55,7 @@ public:
 
 	bool colpito(Weapon* arma)
 	{
-		if (arma->y >= y && draw && arma->x >= x && arma->x <= x + al_get_bitmap_width(immagine[0]))
+		if (arma != nullptr && arma->y >= y && draw && arma->x >= x && arma->x <= x + al_get_bitmap_width(immagine[0]))
 		{
 			++(*this);
 			return true;

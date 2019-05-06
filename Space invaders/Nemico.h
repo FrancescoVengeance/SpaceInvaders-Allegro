@@ -7,6 +7,7 @@
 using namespace std;
 
 enum ENEMY_TYPE { SCARSO , MEDIO, FORTE, FORTISSIMO };
+enum DIREZIONE {DESTRA = 0, SINISTRA, ALTO, BASSO};
 
 class Nemico
 {
@@ -36,5 +37,11 @@ public:
 	double getEnemySpeed() const { return speed; }
 	ENEMY_TYPE getTipo() const { return tipo; }
 	ALLEGRO_BITMAP* getEnemyImage() const { return immagine; }
+
+	void move(DIREZIONE direzione)
+	{
+		if (direzione == DESTRA) x += speed;
+		if (direzione == SINISTRA) x -= speed;
+	}
 };
 #endif

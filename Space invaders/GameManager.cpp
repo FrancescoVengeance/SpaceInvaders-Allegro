@@ -123,7 +123,7 @@ bool GameManager::menu()
 		{
 			MotoreGrafico::draw(startButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressedLong) / 2) - 50);
 		}
-		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) { level2(); return true; }
+		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) { level1(); return true; }
 	}
 	else
 	{
@@ -460,12 +460,15 @@ void GameManager::level1()
 			delete nemico[i][j];
 		}
 	}
+
+	if (close) level2();
 }
 
 void GameManager::level2()
 {
 	al_pause_event_queue(queue2, true);
-	al_register_event_source(queue, al_get_timer_event_source(timer));
+	ALLEGRO_EVENT_QUEUE* queue3 = al_create_event_queue();
+	al_register_event_source(queue3, al_get_timer_event_source(timer));
 	al_start_timer(timer);
 
 	Player giocatore;
@@ -504,7 +507,7 @@ void GameManager::level2()
 	{
 		DIRECTION direction = OTHER; //direzione che viene passata a getPlayerImage() per restituire la giusta animazione
 		ALLEGRO_EVENT evento;
-		al_wait_for_event(queue, &evento);
+		al_wait_for_event(queue3, &evento);
 
 		MotoreGrafico::draw(gameBackground, 0, 0);
 		
@@ -524,8 +527,8 @@ void GameManager::level2()
 
 			al_get_keyboard_state(&keyState);
 			if (al_key_down(&keyState, ALLEGRO_KEY_L)) close = true; //quando premo esc il gioco si chiude
-			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.x -= giocatore.getPlayerSpeed(); direction = LEFT; }
-			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) { giocatore.x += giocatore.getPlayerSpeed(); direction = RIGHT; }
+			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) { giocatore.move(SINISTRA); direction = LEFT; }
+			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) { giocatore.move(DESTRA); direction = RIGHT; }
 
 			//scelta random del nemico che deve sparare
 			if (enemyshoot == false)
@@ -555,7 +558,7 @@ void GameManager::level2()
 			{
 				bool playerShooted = false;
 				armanemico->y += armanemico->getSpeed();
-				al_draw_bitmap(armanemico->getWeaponImage(), armanemico->x, armanemico->y, 1);
+				MotoreGrafico::draw(armanemico);
 				if (giocatore.shooted(armanemico))
 				{
 					//giocaore colpito
@@ -563,7 +566,7 @@ void GameManager::level2()
 					delete armanemico;
 					armanemico = nullptr;
 				}
-				if (armanemico != nullptr &&  armanemico->y >= ALTEZZA)
+				if ((armanemico != nullptr &&  armanemico->y >= ALTEZZA) || bunker1.colpito(armanemico) || bunker2.colpito(armanemico) || bunker3.colpito(armanemico))
 				{
 					delete armanemico;
 					armanemico = nullptr;
@@ -638,7 +641,7 @@ void GameManager::level2()
 						{
 							if (nemico[i][j]->getDraw())
 							{
-								nemico[i][j]->x += nemico[i][j]->getEnemySpeed();
+								nemico[i][j]->move(DESTRA);
 								MotoreGrafico::draw(*nemico[i][j]);
 							}
 						}
@@ -667,7 +670,7 @@ void GameManager::level2()
 					{
 						if (nemico[i][j]->getDraw())
 						{
-							nemico[i][j]->x -= nemico[i][j]->getEnemySpeed();
+							nemico[i][j]->move(SINISTRA);
 							MotoreGrafico::draw(*nemico[i][j]);
 						}
 					}
@@ -708,10 +711,10 @@ void GameManager::level2()
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE))
 		{
-			al_pause_event_queue(queue, true);
+			al_pause_event_queue(queue3, true);
 			pause();
 			al_rest(0.25);
-			al_pause_event_queue(queue, false);
+			al_pause_event_queue(queue3, false);
 		}
 
 		if (giocatore.getLife() == 0) close = true; //implementare la schermata di game over
@@ -739,6 +742,7 @@ void GameManager::level2()
 			delete nemico[i][j];
 		}
 	}
+	al_destroy_event_queue(queue3);
 }
 
 void GameManager::winScreen()

@@ -81,6 +81,12 @@ public:
 		}
 		return false;
 	}
+
+	void move(DIREZIONE d)
+	{
+		if (d == DESTRA) x += speed;
+		if (d == SINISTRA) x -= speed;
+	}
 };
 
 #endif
