@@ -43,6 +43,7 @@ private:
 	bool enemies_initialize(Nemico*[][9], unsigned, unsigned);
 	//int gestionePunteggio(Nemico*,bool&,unsigned);
 	bool aggiornaCoordinate(Nemico*[][9], unsigned, unsigned, float, bool&);
+	bool viciniAlBunker(Nemico*[][9],unsigned, unsigned, Bunker, Bunker, Bunker);
 
 
 	Weapon* arma = nullptr; //arma del giocatore

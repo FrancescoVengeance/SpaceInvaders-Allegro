@@ -726,8 +726,9 @@ void GameManager::level2()
 		}
 
 		auto tempoFine = chrono::steady_clock::now(); //tempo trascorso dall'inizio del livello
-		if (chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() % 15 == 0 &&
-			chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() > 0 && !aggiornaNemici)
+		if (chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() % 4 == 0 &&
+			chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() > 0 && !aggiornaNemici && 
+			viciniAlBunker(nemico,righe,colonne,bunker1,bunker2,bunker3) == false)
 		{
 			cout << aggiornaCoordinate(nemico, righe, colonne, giocatore.getY(), close);
 			aggiornaNemici = true;
@@ -817,4 +818,19 @@ bool GameManager::aggiornaCoordinate(Nemico* nemico[][9], unsigned righe, unsign
 	}
 
 	return true;
+}
+
+bool GameManager::viciniAlBunker(Nemico* nemico[][9], unsigned righe, unsigned colonne, Bunker bunker1, Bunker bunker2, Bunker bunker3)
+{
+	bool vicino = true;
+	for (unsigned i = 0; i < righe; i++)
+	{
+		for (unsigned j = 0; j < colonne; j++)
+		{
+			if (nemico[i][j]->y <= bunker1.getY() - 10 && nemico[i][j]->getDraw() == false && nemico[i][j]->getDraw())
+				vicino = false;
+		}
+	}
+
+	return vicino;
 }
