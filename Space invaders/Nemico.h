@@ -11,12 +11,13 @@ enum DIREZIONE {DESTRA = 0, SINISTRA, ALTO, BASSO};
 
 class Nemico
 {
-protected:
+private:
 	bool draw = true; //variabile per il disegno della sprite
 	int life = 0;
 	int strenght_attack = 0;
 	ENEMY_TYPE tipo;
 	double speed = 0; //velocità del nemico
+protected:
 	ALLEGRO_BITMAP* immagine = nullptr;
 	
 public:

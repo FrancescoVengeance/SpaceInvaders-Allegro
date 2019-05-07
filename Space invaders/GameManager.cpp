@@ -21,9 +21,9 @@ GameManager::GameManager()
 	al_install_mouse();
 	al_install_audio();
 	al_init_acodec_addon();
-	al_init_font_addon(); 
+	al_init_font_addon();
 	al_init_ttf_addon();
-	
+
 	al_set_new_display_flags(ALLEGRO_FULLSCREEN);
 	display = al_create_display(LARGHEZZA, ALTEZZA);
 	timer = al_create_timer(1.0 / FPS);
@@ -84,7 +84,7 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], unsigned righe, unsign
 		nemico[0][j]->x = nemico[0][j - 1]->x + al_get_bitmap_width(nemico[0][j]->getEnemyImage()) + 70;
 	}
 
-	for (unsigned i = 0; i < righe; i++)
+	for (unsigned i = 1; i < righe; i++)
 	{
 		for (unsigned j = 0; j < colonne; j++)
 		{
@@ -100,7 +100,7 @@ bool GameManager::enemies_initialize(Nemico* nemico[][9], unsigned righe, unsign
 		}
 	}
 	return true;
-} 
+}
 
 bool GameManager::menu()
 {
@@ -118,7 +118,7 @@ bool GameManager::menu()
 
 	{
 		MotoreGrafico::draw(startButtonPressed, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressed) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressed) / 2) - 50);
-		
+
 		if (mouseEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
 			MotoreGrafico::draw(startButtonPressedLong, (LARGHEZZA / 2) - (al_get_bitmap_width(startButtonPressedLong) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(startButtonPressedLong) / 2) - 50);
@@ -237,7 +237,7 @@ void GameManager::level1()
 			punteggio << giocatore.getScore();
 			string tempPunteggio = punteggio.str();
 			const char* punteggio2 = tempPunteggio.c_str();
-			al_draw_text(font, al_map_rgb(255, 0, 0),LARGHEZZA-120 , ALTEZZA-90, ALLEGRO_ALIGN_CENTRE, punteggio2);
+			al_draw_text(font, al_map_rgb(255, 0, 0), LARGHEZZA - 120, ALTEZZA - 90, ALLEGRO_ALIGN_CENTRE, punteggio2);
 
 			al_get_keyboard_state(&keyState);
 			if (al_key_down(&keyState, ALLEGRO_KEY_L)) close = true; //quando premo esc il gioco si chiude
@@ -249,19 +249,19 @@ void GameManager::level1()
 			{
 				row_enemy = rand() % 5;
 				column_enemy = rand() % 9;
-				if (nemico[row_enemy][column_enemy]->getDraw()) 
+				if (nemico[row_enemy][column_enemy]->getDraw())
 				{
 					if (row_enemy == righe - 1) //se controllo l'ultima riga
-					{ 
+					{
 						armanemico = new Weapon();
 						armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
 						armanemico->y = nemico[row_enemy][column_enemy]->y;
 						enemyshoot = true;
 					}
-					else 
+					else
 					{
 						if (nemico[row_enemy + 1][column_enemy]->getDraw() == false) //se sotto quel nemico non c'è nessuno, spara
-						{ 
+						{
 							armanemico = new Weapon();
 							armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
 							armanemico->y = nemico[row_enemy][column_enemy]->y;
@@ -320,9 +320,9 @@ void GameManager::level1()
 					bool shooted = false;
 					int vx;
 					int vy;
-					for (int j = 0; j < colonne; j++) 
+					for (int j = 0; j < colonne; j++)
 					{
-						if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + 100 && arma->y <= nemico[i][j]->y + 100 && nemico[i][j]->getDraw()) 
+						if (arma->x >= nemico[i][j]->x && arma->x <= nemico[i][j]->x + 100 && arma->y <= nemico[i][j]->y + 100 && nemico[i][j]->getDraw())
 						{
 							allEnemiesKilled++;
 							shooted = true;
@@ -357,7 +357,7 @@ void GameManager::level1()
 				{
 					for (unsigned j = 0; j < colonne; j++)
 					{
-						if (nemico[i][j] != nullptr) 
+						if (nemico[i][j] != nullptr)
 						{
 							if (nemico[i][j]->getDraw())
 							{
@@ -369,9 +369,9 @@ void GameManager::level1()
 				}
 				//controlla il movimento dei nemici verso destra
 				int yToControl = -1;
-				for (int j = colonne - 1; j >= 0; j--) 
+				for (int j = colonne - 1; j >= 0; j--)
 				{
-					if (nemico[0][j]->getDraw()) 
+					if (nemico[0][j]->getDraw())
 					{
 						yToControl = j;
 						break;
@@ -397,9 +397,9 @@ void GameManager::level1()
 				}
 				//controlla il movimento dei nemici verso sinistra
 				int xToControl = -1;
-				for (int j = 0; j < colonne; j++) 
+				for (int j = 0; j < colonne; j++)
 				{
-					if (nemico[0][j]->getDraw()) 
+					if (nemico[0][j]->getDraw())
 					{
 						xToControl = j;
 						break;
@@ -444,15 +444,15 @@ void GameManager::level1()
 		}
 
 		auto tempoFine = chrono::steady_clock::now(); //tempo trascorso dall'inizio del livello
-		if (chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() % 15 == 0 && 
+		if (chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() % 15 == 0 &&
 			chrono::duration_cast<chrono::seconds>(tempoFine - tempoInizio).count() > 0 && !aggiornaNemici)
 		{
-			cout << aggiornaCoordinate(nemico, righe, colonne,giocatore.getY(),close);
+			cout << aggiornaCoordinate(nemico, righe, colonne, giocatore.getY(), close);
 			aggiornaNemici = true;
 		}
 		else aggiornaNemici = false;
 	}
-	
+
 	//dealloca i nemici
 	for (unsigned i = 0; i < righe; i++)
 	{
@@ -474,7 +474,7 @@ void GameManager::level2()
 
 	Player giocatore;
 	Bunker bunker1(200, ALTEZZA - 350);
-	Bunker bunker2((LARGHEZZA/2) - al_get_bitmap_width(bunker1.getImage())/2, bunker1.getY());
+	Bunker bunker2((LARGHEZZA / 2) - al_get_bitmap_width(bunker1.getImage()) / 2, bunker1.getY());
 	Bunker bunker3(LARGHEZZA - al_get_bitmap_width(bunker1.getImage()) - 200, bunker2.getY());
 
 	//gestione translate nemico
@@ -482,9 +482,9 @@ void GameManager::level2()
 	int yToStart = 400;
 	//fine gestione translate
 
-	const unsigned righe = 5; 
+	const unsigned righe = 5;
 	const unsigned colonne = 9;
-	Nemico* nemico[righe][colonne]; 
+	Nemico* nemico[righe][colonne];
 	//crea i nemici
 	for (unsigned i = 0; i < righe; i++)
 	{
@@ -511,7 +511,7 @@ void GameManager::level2()
 		al_wait_for_event(queue3, &evento);
 
 		MotoreGrafico::draw(gameBackground, 0, 0);
-		
+
 		if (evento.type == ALLEGRO_EVENT_TIMER)
 		{
 			stringstream vite; //stampa delle vite
@@ -547,7 +547,7 @@ void GameManager::level2()
 					}
 					else if (nemico[row_enemy + 1][column_enemy]->getDraw() == false)
 					{
-						 //se sotto quel nemico non c'è nessuno, spara
+						//se sotto quel nemico non c'è nessuno, spara
 						armanemico = new Weapon();
 						armanemico->x = nemico[row_enemy][column_enemy]->x + 50;//50 = dim/2
 						armanemico->y = nemico[row_enemy][column_enemy]->y;
@@ -575,7 +575,7 @@ void GameManager::level2()
 				}
 			}
 			if (armanemico == nullptr) //gestione random shoot nemico 
-			{ 
+			{
 				enemyshoot = false;
 			}
 			//fine gestione arma nemici
@@ -590,7 +590,7 @@ void GameManager::level2()
 			//cout << "bunker " << bunker << endl;
 			if (shoot) //sparo del giocatore
 			{
-				arma->y -= arma->getSpeed(); 
+				arma->y -= arma->getSpeed();
 				MotoreGrafico::draw(arma);
 				//**DA CONTROLLARE**//
 
@@ -618,7 +618,7 @@ void GameManager::level2()
 						break;
 					}
 				}
-				
+
 				//**FINE CONTROLLI COLLISIONI***//
 				if ((arma->y <= 0 && arma != nullptr) || bunker1.colpito(arma) || bunker2.colpito(arma) || bunker3.colpito(arma))
 				{
@@ -788,10 +788,10 @@ void GameManager::pause()
 		{
 			MotoreGrafico::draw(escButton, (LARGHEZZA / 2) - (al_get_bitmap_width(escButton) / 2), (ALTEZZA / 2) - (al_get_bitmap_height(escButton) / 2) + 400);
 		}
-		al_wait_for_event(queue2,&mouseEvent);
+		al_wait_for_event(queue2, &mouseEvent);
 		MotoreGrafico::refreshDisplay();
 	}
-		
+
 	al_destroy_bitmap(pausa);
 }
 
